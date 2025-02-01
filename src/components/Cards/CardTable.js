@@ -1,11 +1,27 @@
-import React from "react";
+import React , { useState, useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 
 // components
 
-import TableDropdown from "components/Dropdowns/TableDropdown.js";
+//import TableDropdown from "components/Dropdowns/TableDropdown.js";
 
+import { getAllUsers } from '../../services/apiUser'
 export default function CardTable({ color }) {
+const [users , setUsers ] = useState([]);
+
+const getUsers = useCallback( async () => {
+    await getAllUsers()
+      .then((res) => {
+        console.log(res.data);
+        setUsers(res.data);
+        console.log(users);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => { getUsers() }, [getAllUsers])
+
+
   return (
     <>
       <div
@@ -14,6 +30,7 @@ export default function CardTable({ color }) {
           (color === "light" ? "bg-white" : "bg-lightBlue-900 text-white")
         }
       >
+        
         <div className="rounded-t mb-0 px-4 py-3 border-0">
           <div className="flex flex-wrap items-center">
             <div className="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -104,10 +121,11 @@ export default function CardTable({ color }) {
               </tr>
             </thead>
             <tbody>
-              <tr>
+              {users.map((user,index) =>  (
+              <tr key={index}>
                 <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                   <img
-                    src={require("assets/img/bootstrap.jpg").default}
+                    src={'http://localhost:5000/images/Users/${user.user_image}'}
                     className="h-12 w-12 bg-white rounded-full border"
                     alt="..."
                   ></img>{" "}
@@ -117,17 +135,17 @@ export default function CardTable({ color }) {
                       +(color === "light" ? "text-blueGray-600" : "text-white")
                     }
                   >
-                    FirtName
+                    {user.firstName}
                   </span>
                 </th>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  LastName
+                  {user.lastName}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   Email
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  Age
+                 {user.age}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   CreatedAt
@@ -138,6 +156,7 @@ export default function CardTable({ color }) {
                   </button>
                 </td>
               </tr>
+            ))}
             </tbody>
           </table>
         </div>
