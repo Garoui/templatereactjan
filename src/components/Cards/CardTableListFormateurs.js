@@ -51,7 +51,7 @@ export default function CardTableListFormateurs({ color }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Budget
+                  LastName
                 </th>
                 <th
                   className={
@@ -71,7 +71,7 @@ export default function CardTableListFormateurs({ color }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Users
+                  Email
                 </th>
                 <th
                   className={
@@ -81,7 +81,7 @@ export default function CardTableListFormateurs({ color }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Completion
+                  {/* Completion
                 </th>
                 <th
                   className={
@@ -90,7 +90,20 @@ export default function CardTableListFormateurs({ color }) {
                       ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
-                ></th>
+                > */}
+                 {/* Completion
+                </th>
+                <th
+                  className={
+                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                    (color === "light"
+                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
+                  }
+                
+                > */}
+
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -107,40 +120,19 @@ export default function CardTableListFormateurs({ color }) {
                       +(color === "light" ? "text-blueGray-600" : "text-white")
                     }
                   >
-                    Argon Design System
+                    FirtName
                   </span>
                 </th>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  $2,500 USD
+                  LastName
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <i className="fas fa-circle text-orange-500 mr-2"></i> pending
+                  <i className="fas fa-circle text-orange-500 mr-2"></i> Email
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <div className="flex">
-                    <img
-                      src={require("assets/img/team-1-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-2-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-3-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-4-470x470.png").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                  </div>
+                  
                 </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                {/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   <div className="flex items-center">
                     <span className="mr-2">60%</span>
                     <div className="relative w-full">
@@ -152,9 +144,13 @@ export default function CardTableListFormateurs({ color }) {
                       </div>
                     </div>
                   </div>
-                </td>
+                </td> */}
+                
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                  <TableDropdown />
+                <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                           Small
+                    </button>
+                  <TableDropdown /> {/* ligne loula */}
                 </td>
               </tr>
               <tr>
