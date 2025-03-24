@@ -9,52 +9,56 @@ export default function Index() {
   return (
     <>
       <IndexNavbar fixed />
-      <section className="header relative pt-16 items-center flex h-screen max-h-860-px">
-        <div className="container mx-auto items-center flex flex-wrap">
-          <div className="w-full md:w-8/12 lg:w-6/12 xl:w-6/12 px-4">
-            <div className="pt-32 sm:pt-0">
-              <h2 className="font-semibold text-4xl text-blueGray-600">
-                Notus React - A beautiful extension for Tailwind CSS.
-              </h2>
-              <p className="mt-4 text-lg leading-relaxed text-blueGray-500">
-                Notus React is Free and Open Source. It does not change any of
-                the CSS from{" "}
-                <a
-                  href="https://tailwindcss.com/?ref=creativetim"
-                  className="text-blueGray-600"
-                  target="_blank"
-                >
-                  Tailwind CSS
-                </a>
-                . It features multiple HTML elements and it comes with dynamic
-                components for ReactJS, Vue and Angular.
-              </p>
-              <div className="mt-12">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus?ref=nr-index"
-                  target="_blank"
-                  className="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-lightBlue-500 active:bg-lightBlue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
-                >
-                  Get started
-                </a>
-                <a
-                  href="https://github.com/creativetimofficial/notus-react?ref=nr-index"
-                  className="github-star ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-blueGray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
-                  target="_blank"
-                >
-                  Github Star
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+<section className="header relative pt-16 items-center flex h-screen max-h-860-px">
+  {/* Background Image */}
+  <div className="absolute top-0 w-full h-full bg-center bg-cover"
+    style={{
+      backgroundImage: "url(" + require("assets/img/bbbback.jpg").default + ")",
+    }}>
+    {/* Dark Overlay */}
+    <div className="absolute top-0 w-full h-full bg-black opacity-50"></div>
+  </div>
 
-        <img
-          className="absolute top-0 b-auto right-0 pt-16 sm:w-6/12 -mt-48 sm:mt-0 w-10/12 max-h-860px"
-          src={require("assets/img/bbbback.jpg").default}
-          alt="..."
-        />
-      </section>
+  {/* Text Content */}
+  <div className="relative z-10 container mx-auto items-center flex flex-wrap">
+    <div className="w-full md:w-8/12 lg:w-6/12 xl:w-6/12 px-4">
+      <div className="pt-32 sm:pt-0">
+        <h2 className="font-semibold text-4xl text-white">
+        Skills you need today for a successful tomorrow
+        </h2>
+        <p className="mt-4 text-lg leading-relaxed text-white">
+          Notus React is Free and Open Source. It does not change any of
+          the CSS from{" "}
+          <a
+            href="https://tailwindcss.com/?ref=creativetim"
+            className="text-blue-400 underline"
+            target="_blank"
+          >
+            Tailwind CSS
+          </a>
+          . It features multiple HTML elements and it comes with dynamic
+          components for ReactJS, Vue, and Angular.
+        </p>
+        <div className="mt-12">
+          <a
+            href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus?ref=nr-index"
+            target="_blank"
+            className="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-lightBlue-500 active:bg-lightBlue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
+          >
+            Get started
+          </a>
+          <a
+            href="https://github.com/creativetimofficial/notus-react?ref=nr-index"
+            className="github-star ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-blueGray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
+            target="_blank"
+          >
+            Github Star
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
       <section className="mt-48 md:mt-40 pb-40 relative bg-blueGray-100">
         <div
@@ -177,7 +181,7 @@ export default function Index() {
 
         <div className="container mx-auto overflow-hidden pb-20">
           <div className="flex flex-wrap items-center">
-            <div className="w-full md:w-4/12 px-12 md:px-4 ml-auto mr-auto mt-48">
+            {/* <div className="w-full md:w-4/12 px-12 md:px-4 ml-auto mr-auto mt-48">
               <div className="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-white">
                 <i className="fas fa-sitemap text-xl"></i>
               </div>
@@ -223,11 +227,11 @@ export default function Index() {
                 View All{" "}
                 <i className="fa fa-angle-double-right ml-1 leading-relaxed"></i>
               </a>
-            </div>
+            </div> */}
 
-            <div className="w-full md:w-5/12 px-4 mr-auto ml-auto mt-32">
-              <div className="relative flex flex-col min-w-0 w-full mb-6 mt-48 md:mt-0">
-                <img
+            <div className="w-full md:w-5/12 px-4 mr-auto ml-auto mt-1">
+              <div className="relative flex flex-col min-w-0 w-full mb-0 mt-48 md:mt-0">
+                {/* <img
                   alt="..."
                   src={require("assets/img/component-btn.png").default}
                   className="w-full align-middle rounded absolute shadow-lg max-w-100-px z-3 left-145-px -top-29-px"
@@ -257,7 +261,7 @@ export default function Index() {
                   src={require("assets/img/component-btn-pink.png").default}
                   className="w-full align-middle rounded absolute shadow-xl max-w-120-px left-195-px top-95-px"
                 />
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -415,7 +419,7 @@ export default function Index() {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 pb-32 pt-48">
+        {/* <div className="container mx-auto px-4 pb-32 pt-48">
           <div className="items-center flex flex-wrap">
             <div className="w-full md:w-5/12 ml-auto px-12 md:px-4">
               <div className="md:pr-12">
@@ -490,7 +494,7 @@ export default function Index() {
               />
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="justify-center text-center flex flex-wrap mt-24">
           <div className="w-full md:w-6/12 px-12 md:px-4">
@@ -502,8 +506,8 @@ export default function Index() {
             </p>
           </div>
         </div>
+        </div>
       </section>
-
       <section className="block relative z-1 bg-blueGray-600">
         <div className="container mx-auto">
           <div className="justify-center flex flex-wrap">
@@ -548,7 +552,7 @@ export default function Index() {
                       <img
                         alt="..."
                         className="align-middle border-none max-w-full h-auto rounded-lg"
-                        src={require("assets/img/landing.jpg").default}
+                        src={require("assets/img/landinresized.png").default}
                       />
                     </div>
                   </Link>
