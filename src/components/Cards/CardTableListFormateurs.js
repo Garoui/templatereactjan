@@ -1,11 +1,29 @@
-import React from "react";
+import React , {useCallback, useEffect, useState} from "react";
 import PropTypes from "prop-types";
-
+import {getAllFormateurs} from "../../services/apiFormateur" //djib data
 // components
 
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
 
 export default function CardTableListFormateurs({ color }) {
+  const [formateurs, setFormateurs] = useState([]); 
+   const getFormateurs = useCallback  (async() => {
+     try {
+     console.log("data :")
+       await getAllFormateurs().then((res)=>{//await dima maa async ligne tettsabeb f retard
+         console.log(res)
+         setFormateurs(res.data.formateurList)
+       }) 
+     } catch (error) {
+       console.log(error)
+     }
+   }, []);
+
+   useEffect(() => {
+    getFormateurs();
+   }, [getFormateurs]); //useffect tkhalik awell m todkhel l sit y3abilk data l hachtek beha
+
+
   return (
     <>
       <div
@@ -25,6 +43,7 @@ export default function CardTableListFormateurs({ color }) {
               >
                 List Formateur
               </h3>
+              <button onClick={()=>{getFormateurs()}}>Gett formateurs</button>
             </div>
           </div>
         </div>
@@ -41,9 +60,9 @@ export default function CardTableListFormateurs({ color }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  UserName
+                  nom
                 </th>
-                <th
+                {/* <th
                   className={
                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
                     (color === "light"
@@ -51,18 +70,8 @@ export default function CardTableListFormateurs({ color }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  LastName
-                </th>
-                <th
-                  className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-                    (color === "light"
-                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
-                  }
-                >
-                  Status
-                </th>
+                  Prénom
+                </th> */}
                 <th
                   className={
                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
@@ -81,7 +90,28 @@ export default function CardTableListFormateurs({ color }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  {/* Completion
+                  Specialite
+                </th>
+               
+                {/* <th
+                  className={
+                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                    (color === "light"
+                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
+                  }
+                >
+                   Status   
+                </th> */}
+                <th
+                  className={
+                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                    (color === "light"
+                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
+                  }
+                >
+                 CreateAt
                 </th>
                 <th
                   className={
@@ -90,23 +120,13 @@ export default function CardTableListFormateurs({ color }) {
                       ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
-                > */}
-                 {/* Completion
-                </th>
-                <th
-                  className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-                    (color === "light"
-                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
-                  }
+                >
                 
-                > */}
-
                 </th>
               </tr>
             </thead>
             <tbody>
+              {formateurs.map((formateur,index)=>(
               <tr>
                 <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                   <img
@@ -120,32 +140,26 @@ export default function CardTableListFormateurs({ color }) {
                       +(color === "light" ? "text-blueGray-600" : "text-white")
                     }
                   >
-                    FirtName
+                    {/* {formateur.nom} */}
                   </span>
                 </th>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  LastName
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <i className="fas fa-circle text-orange-500 mr-2"></i> Email
-                </td>
+                {/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                 Prénom
+                </td> */}
+
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   
+                  Email
+                </td>
+                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                  Specialite
                 </td>
                 {/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <div className="flex items-center">
-                    <span className="mr-2">60%</span>
-                    <div className="relative w-full">
-                      <div className="overflow-hidden h-2 text-xs flex rounded bg-red-200">
-                        <div
-                          style={{ width: "60%" }}
-                          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
+                  Status
                 </td> */}
-                
+                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                  CreateAt
+                </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                 <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
                            Small
@@ -153,6 +167,7 @@ export default function CardTableListFormateurs({ color }) {
                   <TableDropdown /> {/* ligne loula */}
                 </td>
               </tr>
+               ))} 
               <tr>
                 <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                   <img
@@ -173,47 +188,16 @@ export default function CardTableListFormateurs({ color }) {
                   $1,800 USD
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <i className="fas fa-circle text-emerald-500 mr-2"></i>{" "}
+                  {/* <i className="fas fa-circle text-emerald-500 mr-2"></i>{" "} */}
                   completed
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <div className="flex">
-                    <img
-                      src={require("assets/img/team-1-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-2-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-3-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-4-470x470.png").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                  </div>
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <div className="flex items-center">
-                    <span className="mr-2">100%</span>
-                    <div className="relative w-full">
-                      <div className="overflow-hidden h-2 text-xs flex rounded bg-emerald-200">
-                        <div
-                          style={{ width: "100%" }}
-                          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
+                 ghjj
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+                <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                           Small
+                    </button>
                   <TableDropdown />
                 </td>
               </tr>
@@ -237,46 +221,16 @@ export default function CardTableListFormateurs({ color }) {
                   $3,150 USD
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <i className="fas fa-circle text-red-500 mr-2"></i> delayed
+                  {/* <i className="fas fa-circle text-red-500 mr-2"></i>  */}
+                  delayed
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <div className="flex">
-                    <img
-                      src={require("assets/img/team-1-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-2-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-3-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-4-470x470.png").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                  </div>
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <div className="flex items-center">
-                    <span className="mr-2">73%</span>
-                    <div className="relative w-full">
-                      <div className="overflow-hidden h-2 text-xs flex rounded bg-red-200">
-                        <div
-                          style={{ width: "73%" }}
-                          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
+                  gghh
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+                <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                           Small
+                    </button>
                   <TableDropdown />
                 </td>
               </tr>
@@ -300,47 +254,16 @@ export default function CardTableListFormateurs({ color }) {
                   $4,400 USD
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <i className="fas fa-circle text-teal-500 mr-2"></i> on
-                  schedule
+                {/* <i className="fas fa-circle text-teal-500 mr-2"></i>  */}
+                on  schedule
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <div className="flex">
-                    <img
-                      src={require("assets/img/team-1-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-2-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-3-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-4-470x470.png").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                  </div>
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <div className="flex items-center">
-                    <span className="mr-2">90%</span>
-                    <div className="relative w-full">
-                      <div className="overflow-hidden h-2 text-xs flex rounded bg-teal-200">
-                        <div
-                          style={{ width: "90%" }}
-                          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-teal-500"
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
+                  gghjklùmmm
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+                <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                           Small
+                    </button>
                   <TableDropdown />
                 </td>
               </tr>
@@ -364,50 +287,22 @@ export default function CardTableListFormateurs({ color }) {
                   $2,200 USD
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <i className="fas fa-circle text-emerald-500 mr-2"></i>{" "}
+                  {/* <i className="fas fa-circle text-emerald-500 mr-2"></i>{" "} */}
                   completed
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   <div className="flex">
-                    <img
-                      src={require("assets/img/team-1-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-2-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-3-800x800.jpg").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                    <img
-                      src={require("assets/img/team-4-470x470.png").default}
-                      alt="..."
-                      className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"
-                    ></img>
-                  </div>
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <div className="flex items-center">
-                    <span className="mr-2">100%</span>
-                    <div className="relative w-full">
-                      <div className="overflow-hidden h-2 text-xs flex rounded bg-emerald-200">
-                        <div
-                          style={{ width: "100%" }}
-                          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
-                        ></div>
-                      </div>
-                    </div>
+                    fhjnnnn
                   </div>
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+                <button className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+                           Small
+                    </button>
                   <TableDropdown />
                 </td>
               </tr>
+             
             </tbody>
           </table>
         </div>

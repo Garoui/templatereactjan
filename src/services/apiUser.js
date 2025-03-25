@@ -1,11 +1,11 @@
 //cnx bin front w back sart ala rest api
 
 
-import axios from 'axios';
+import axios from 'axios'; //cest une outil djib data mn backend  
 
-  const apiURL = 'http://localhost:5000/users';
+  const apiurl = 'http://localhost:5000/users';
 
-  export async function getAllUsers() {
-    return await axios.get(`${apiURL}/getAllUsers`);
+  export async function getAllUsers() {  // async non bloqq khtr fonction bch tokhrj m serveur
+    return await axios.get(`${apiurl}/getAllUsers`);
     
 }
