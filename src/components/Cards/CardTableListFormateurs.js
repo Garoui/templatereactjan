@@ -9,7 +9,7 @@ export default function CardTableListFormateurs({ color }) {
   const [formateurs, setFormateurs] = useState([]); 
    const getFormateurs = useCallback( async() => {
      try {
-     console.log("data :");
+     console.log("data trainers :");
        await getAllFormateurs().then((res) => {//await dima maa async ligne tettsabeb f retard
          console.log(res);
          setFormateurs(res.data.formateurList)
@@ -41,9 +41,9 @@ export default function CardTableListFormateurs({ color }) {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                List Formateur
+                List trainers
               </h3>
-              <button onClick={()=>{getFormateurs()}}>Gett formateurs</button>
+             
             </div>
           </div>
         </div>
