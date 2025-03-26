@@ -2,7 +2,7 @@ import React from "react";
 
 // components
 
-import CardTableListFormateurs from "components/Cards/CardTableListFormateurs";
+import CardTableListFormateurs from "components/Cards/CardTableListFormateurs.js";
 import CardTableListUsers from "components/Cards/CardTableListUsers.js";
 
 
