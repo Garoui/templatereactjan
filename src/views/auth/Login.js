@@ -1,7 +1,23 @@
-import React from "react";
+import React  from "react";
 import { Link } from "react-router-dom";
-
+import {} from "../../services/apiUser";
 export default function Login() {
+  // const [newAccount , setNewAccount] = useState({
+  //   email:"",password:""
+  // })
+
+  // const handleChange = (e) => {
+  //   const { name , value } = e.target;
+  //   setNewAccount({...newAccount , [name]: value})
+  // }
+
+  // const addData = async () => {
+  //   try {
+  //     await addData
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
   return (
     <>
       <div className="container mx-auto px-4 h-full">
