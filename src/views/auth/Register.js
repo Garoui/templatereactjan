@@ -1,7 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+import {addUser} from "../../services/apiUser";
+import {useHistory} from "react-router-dom";
 export default function Register() {
+const history = useHistory();
+
+  const [newAccount , setNewAccount] = useState({
+   nom:"" ,email:"",password:""
+  })
+
+  const handleChange = (e) => {
+    const { name , value } = e.target;
+    setNewAccount({...newAccount , [name]: value})
+  }
+
+  const addData = async () => {
+    try {
+      await addUser(newAccount).then(()=>{
+        history.push("/auth/login");
+      })
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -50,12 +72,14 @@ export default function Register() {
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                       htmlFor="grid-password"
                     >
-                      Name
+                      nom
                     </label>
                     <input
-                      type="email"
+                      type="text"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      placeholder="Name"
+                      placeholder="nom"
+                      name="nom"
+                      onChange={handleChange}
                     />
                   </div>
 
@@ -64,12 +88,14 @@ export default function Register() {
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                       htmlFor="grid-password"
                     >
-                      Email
+                      email
                     </label>
                     <input
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      placeholder="Email"
+                      placeholder="email"
+                       name="email"
+                       onChange={handleChange}
                     />
                   </div>
 
@@ -78,12 +104,14 @@ export default function Register() {
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                       htmlFor="grid-password"
                     >
-                      Password
+                      password
                     </label>
                     <input
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      placeholder="Password"
+                      placeholder="password"
+                       name="password"
+                       onChange={handleChange}
                     />
                   </div>
 
@@ -111,6 +139,7 @@ export default function Register() {
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
+                      onClick={()=>{addData(newAccount)}}
                     >
                       Create Account
                     </button>
