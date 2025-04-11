@@ -1,12 +1,13 @@
 import React , { useCallback, useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import {getAllUsers} from "../../services/apiUser" ;//djib data
+import {getAllUsers,addUser} from "../../services/apiUser" ;//djib data
 // components
 
 
 
 export default function CardTableListUsers({ color }) {
   const [users, setUsers] = useState([]); 
+  
    const getUsers = useCallback( async() => {
      try {
      console.log("data users :");
@@ -22,7 +23,28 @@ export default function CardTableListUsers({ color }) {
    useEffect(() => {
     getUsers();
    }, [getUsers]); //useffect tkhalik awell m todkhel l sit y3abilk data l hachtek beha
+//------------------add--------------
+const [newUser,setNewUser] = useState({
+    nom:"",
+    prenom:"",
+    email:"",
+    password:"",
+  })
+    const handleChange = (e) => {
+      const { name , value } = e.target;
+      setNewUser({...newUser , [name]:value})
+      
+    }
 
+    //fonction botton dajout
+    const AddNewUser = async () => {
+      try {
+        await addUser(newUser);
+        getUsers();
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
   return (
     <>
@@ -164,6 +186,15 @@ export default function CardTableListUsers({ color }) {
             </tbody>
           </table>
         </div>
+      </div>
+      <div>
+        <input type="text" placeholder="nom" className="mr-2" name="nom" onChange={handleChange}/>
+        <input type="text" placeholder="prenom" className="mr-2" name="prenom"  onChange={handleChange}/>
+        {/* <input type="number" placeholder="age" className="mr-2" name="age"  onChange={handleChange}/> */}
+        <input type="email" placeholder="email" className="mr-2" name="email"  onChange={handleChange}/>
+        <input type="password" placeholder="password" name="password"  onChange={handleChange}/>
+        <button onClick={()=>{AddNewUser(newUser)}}>AddUser</button>
+      
       </div>
     </>
   );

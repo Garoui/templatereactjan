@@ -9,7 +9,6 @@ import axios from 'axios'; //cest une outil djib data mn backend
     return await axios.get(`${apiurl}/getAllUsers`);
     
 }
-
 export async function addUser(userData) {
   return await axios.post(`${apiurl}/addUser`,userData)
 }
