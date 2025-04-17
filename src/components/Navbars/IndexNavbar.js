@@ -1,12 +1,20 @@
 /*eslint-disable*/
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link,useHistory } from "react-router-dom";
+
+
+
 // components
 
 import IndexDropdown from "components/Dropdowns/IndexDropdown.js";
 
 export default function Navbar(props) {
+  const history = useHistory();
   const [navbarOpen, setNavbarOpen] = React.useState(false);
+
+  const goToLogin = () => {
+    history.push('/auth/login'); // navigate to login
+  };
   return (
     <>
       <nav className="top-0 fixed z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg bg-white shadow">
@@ -33,8 +41,8 @@ export default function Navbar(props) {
             }
             id="example-navbar-warning"
           >
-            {/* <ul className="flex flex-col lg:flex-row list-none mr-auto">
-              <li className="flex items-center">
+            <ul className="flex flex-col lg:flex-row list-none mr-auto">
+              {/* <li className="flex items-center">
                 <a
                   className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
                   href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus?ref=nr-index-navbar"
@@ -42,9 +50,25 @@ export default function Navbar(props) {
                   <i className="text-blueGray-400 far fa-file-alt text-lg leading-lg mr-2" />{" "}
                   Docs
                 </a>
-              </li>
-            </ul> */}
+              </li> */}
+              <li className="flex items-center">
+          <Link
+            to="/home-training"
+            className="text-blueGray-700 hover:text-blueGray-500 px-3 py-2 flex items-center text-sm uppercase font-bold"
+          >
+            Accueil
+          </Link>
+        </li>
+            </ul>
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
+            <li className="flex items-center">
+                <Link
+                  to="/ressource"
+                  className="text-blueGray-700 hover:text-blueGray-500 px-3 py-2 flex items-center text-sm uppercase font-bold"
+                >
+                 Ressource
+                </Link>
+              </li>
               <li className="flex items-center">
                 <IndexDropdown />
               </li>
@@ -70,7 +94,7 @@ export default function Navbar(props) {
                 </a>
               </li> */}
 
-              <li className="flex items-center">
+              {/* <li className="flex items-center">
                 <a
                   className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
                   href="https://github.com/creativetimofficial/notus-react?ref=nr-index-navbar"
@@ -79,16 +103,18 @@ export default function Navbar(props) {
                   <i className="text-blueGray-400 fab fa-github text-lg leading-lg " />
                   <span className="lg:hidden inline-block ml-2">Star</span>
                 </a>
-              </li>
+              </li> */}
 
-              {/* <li className="flex items-center">
+              <li className="flex items-center">
                 <button
+
                   className="bg-lightBlue-500 text-white active:bg-lightBlue-600 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
                   type="button"
+                  onClick={goToLogin}
                 >
-                  <i className="fas fa-arrow-alt-circle-down"></i> Download
+                  <i className=""></i>Se connecter
                 </button>
-              </li> */}
+              </li> 
             </ul>
           </div>
         </div>

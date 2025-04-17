@@ -23,10 +23,10 @@ export default function Index() {
   <div className="relative z-10 container mx-auto items-center flex flex-wrap">
     <div className="w-full md:w-8/12 lg:w-6/12 xl:w-6/12 px-4">
       <div className="pt-32 sm:pt-0">
-        <h2 className="font-semibold text-4xl text-white">
+        {/* <h2 className="font-semibold text-4xl text-white">
         Skills you need today for a successful tomorrow
-        </h2>
-        <p className="mt-4 text-lg leading-relaxed text-white">
+        </h2> */}
+        {/* <p className="mt-4 text-lg leading-relaxed text-white">
           Notus React is Free and Open Source. It does not change any of
           the CSS from{" "}
           <a
@@ -38,22 +38,22 @@ export default function Index() {
           </a>
           . It features multiple HTML elements and it comes with dynamic
           components for ReactJS, Vue, and Angular.
-        </p>
+        </p> */}
         <div className="mt-12">
           <a
             href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus?ref=nr-index"
             target="_blank"
             className="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-lightBlue-500 active:bg-lightBlue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
           >
-            Get started
+            Se Connecter
           </a>
-          <a
+          {/* <a
             href="https://github.com/creativetimofficial/notus-react?ref=nr-index"
             className="github-star ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-blueGray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
             target="_blank"
           >
             Github Star
-          </a>
+          </a> */}
         </div>
       </div>
     </div>

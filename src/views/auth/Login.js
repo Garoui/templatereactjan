@@ -1,23 +1,37 @@
-import React  from "react";
+import React ,{useState} from "react";
 import { Link } from "react-router-dom";
-import {} from "../../services/apiUser";
+import {login} from "../../services/apiUser";
+import {useHistory} from "react-router-dom";
+
 export default function Login() {
-  // const [newAccount , setNewAccount] = useState({
-  //   email:"",password:""
-  // })
+  const history = useHistory();
+  
+   const [newAccount , setNewAccount] = useState({
+     email:"",password:""
+   })
 
-  // const handleChange = (e) => {
-  //   const { name , value } = e.target;
-  //   setNewAccount({...newAccount , [name]: value})
-  // }
+   const handleChange = (e) => {
+    const { name , value } = e.target;
+     setNewAccount({...newAccount , [name]: value})
+   }
 
-  // const addData = async () => {
-  //   try {
-  //     await addData
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
+   const login2 = async () => {
+     try {
+      console.log("tantative login avec:",newAccount);
+      const res = await login(newAccount);
+        console.log("res",res);
+        if(res.data.user.role === "Etudiant"){
+          history.push("/profile");
+
+        }else{
+          history.push("/admin/table");
+
+        }
+      
+     } catch (error) {
+       console.log("Erreur Front :",error);
+     }
+   }
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -27,21 +41,21 @@ export default function Login() {
               <div className="rounded-t mb-0 px-6 py-6">
                 <div className="text-center mb-3">
                   <h6 className="text-blueGray-500 text-sm font-bold">
-                    Sign in with
+                    Connectez-vous avec
                   </h6>
                 </div>
                 <div className="btn-wrapper text-center">
-                  <button
+                  {/* <button
                     className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     type="button"
                   >
-                    <img
+                     <img
                       alt="..."
                       className="w-5 mr-1"
                       src={require("assets/img/github.svg").default}
                     />
                     Github
-                  </button>
+                  </button>  */}
                   <button
                     className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     type="button"
@@ -58,7 +72,7 @@ export default function Login() {
               </div>
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                 <div className="text-blueGray-400 text-center mb-3 font-bold">
-                  <small>Or sign in with credentials</small>
+                  <small>Ou Connectez-vous avec vos identifiants</small>
                 </div>
                 <form>
                   <div className="relative w-full mb-3">
@@ -72,6 +86,8 @@ export default function Login() {
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
+                      name="email"
+                      onChange={handleChange}
                     />
                   </div>
 
@@ -80,12 +96,15 @@ export default function Login() {
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                       htmlFor="grid-password"
                     >
-                      Password
+                      Mot de passe
                     </label>
                     <input
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
+                      name="password"
+                      onChange={handleChange}
+
                     />
                   </div>
                   <div>
@@ -96,7 +115,7 @@ export default function Login() {
                         className="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
                       />
                       <span className="ml-2 text-sm font-semibold text-blueGray-600">
-                        Remember me
+                      Mémoriser mes informations
                       </span>
                     </label>
                   </div>
@@ -105,8 +124,9 @@ export default function Login() {
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
+                      onClick={()=>{login2(newAccount)}}
                     >
-                      Sign In
+                      Se connecter
                     </button>
                   </div>
                 </form>
@@ -118,12 +138,12 @@ export default function Login() {
                   to="/auth/forget"
                   className="text-blueGray-200"
                 >
-                  <small>Forgot password?</small>
+                  <small>Mot de passe oublié?</small>
                 </Link>
               </div>
               <div className="w-1/2 text-right">
                 <Link to="/auth/register" className="text-blueGray-200">
-                  <small>Create new account</small>
+                  <small>Créer un nouveau compte</small>
                 </Link>
               </div>
             </div>

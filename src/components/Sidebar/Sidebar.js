@@ -146,7 +146,7 @@ export default function Sidebar() {
                         : "text-blueGray-300")
                     }
                   ></i>{" "}
-                  Tables
+                  liste d'utilisateurs
                 </Link>
               </li>
 
@@ -168,7 +168,7 @@ export default function Sidebar() {
                         : "text-blueGray-300")
                     }
                   ></i>{" "}
-                  Maps
+                  Calendrier
                 </Link>
               </li>
             </ul>
@@ -177,7 +177,7 @@ export default function Sidebar() {
             <hr className="my-4 md:min-w-full" />
             {/* Heading */}
             <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-              Auth Layout Pages
+              Page d'authentification
             </h6>
             {/* Navigation */}
 
@@ -188,7 +188,7 @@ export default function Sidebar() {
                   to="/auth/login"
                 >
                   <i className="fas fa-fingerprint text-blueGray-400 mr-2 text-sm"></i>{" "}
-                  Login
+                  Se connecter
                 </Link>
               </li>
 
@@ -198,7 +198,7 @@ export default function Sidebar() {
                   to="/auth/register"
                 >
                   <i className="fas fa-clipboard-list text-blueGray-300 mr-2 text-sm"></i>{" "}
-                  Register
+                  Registre
                 </Link>
               </li>
             </ul>
