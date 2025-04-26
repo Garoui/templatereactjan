@@ -14,24 +14,23 @@ export default function Login() {
     const { name , value } = e.target;
      setNewAccount({...newAccount , [name]: value})
    }
-
    const login2 = async () => {
-     try {
-      console.log("tantative login avec:",newAccount);
+    try {
       const res = await login(newAccount);
-        console.log("res",res);
-        if(res.data.user.role === "Etudiant"){
-          history.push("/profile");
-
-        }else{
-          history.push("/admin/table");
-
-        }
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user)); // Store user data
       
-     } catch (error) {
-       console.log("Erreur Front :",error);
-     }
-   }
+      if (res.data.user.role === "Etudiant") {
+        history.push("/profile");
+      } else {
+        history.push("/admin/table");
+      }
+    } catch (error) {
+      console.log("Erreur Front :", error);
+    }
+  };
+  
+ 
   return (
     <>
       <div className="container mx-auto px-4 h-full">

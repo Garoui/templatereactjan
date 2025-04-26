@@ -1,11 +1,18 @@
 /*eslint-disable*/
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link,useHistory } from "react-router-dom";
 
 import IndexNavbar from "components/Navbars/IndexNavbar.js";
 import Footer from "components/Footers/Footer.js";
 
 export default function Index() {
+
+  const history = useHistory();
+  //const [navbarOpen, setNavbarOpen] = React.useState(false);
+
+  const goToLogin = () => {
+    history.push('/auth/login'); // navigate to login
+  };
   return (
     <>
       <IndexNavbar fixed />
@@ -41,7 +48,8 @@ export default function Index() {
         </p> */}
         <div className="mt-12">
           <a
-            href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus?ref=nr-index"
+            //href="https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus?ref=nr-index"
+            onClick={goToLogin}
             target="_blank"
             className="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-lightBlue-500 active:bg-lightBlue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
           >
@@ -522,7 +530,7 @@ export default function Index() {
                       <img
                         alt="..."
                         className="align-middle border-none max-w-full h-auto rounded-lg"
-                        src={require("assets/img/login.jpg").default}
+                        src={require("assets/img/login_image.jpg").default}
                       />
                     </div>
                   </Link>

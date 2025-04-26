@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "components/Navbars/AuthNavbar.js";
 import Footer from "components/Footers/Footer.js";
 import { getUserById } from "../services/apiUser";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 //import Profile from '../'
 
 //import { render, screen } from '@testing-library/react';
@@ -28,7 +29,7 @@ const ProfilePictureUpload = ({ currentImage, setImage }) => {
         )}
       </div>
       <label className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full cursor-pointer transform transition-all duration-200 hover:bg-blue-700 hover:scale-110">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="black">
           <path fillRule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
         </svg>
         <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
@@ -40,18 +41,33 @@ const ProfilePictureUpload = ({ currentImage, setImage }) => {
 export default function Profile() {
   const [image, setImage] = useState("photodeprofile.png");
   const [user, setUser] = useState(null);
-
+  const history = useHistory();
   useEffect(() => {
+    // First try to get user from localStorage
+    
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
+      
+      // Then fetch fresh data from API
       getUserById(parsedUser._id)
-        .then((res) => setUser(res.data))
-        .catch((err) =>
-          console.error("Erreur lors du chargement des infos utilisateur :", err)
-        );
+        .then((res) => {
+          setUser(res.data);
+          // Update localStorage with fresh data
+          localStorage.setItem("user", JSON.stringify(res.data));
+        })
+        .catch((err) => {
+          console.error("Erreur lors du chargement des infos utilisateur :", err);
+          // Fallback to stored user if API fails
+          setUser(parsedUser);
+        });
+    } else {
+      // If no user in localStorage, redirect to login
+      history.push("/profile");
     }
-  }, []);
+  }, [history]);
+
+
 
   return (
     <>
@@ -73,7 +89,7 @@ export default function Profile() {
             <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
               <div className="px-6">
                 <div className="flex flex-wrap justify-center">
-                  <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
+                  <div className="w-full lg:w-3/12 px-4 lg:order-2 flex  justify-center">
                     <ProfilePictureUpload currentImage={image} setImage={setImage} />
                   </div>
 
