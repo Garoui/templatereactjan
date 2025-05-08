@@ -20,7 +20,7 @@ const StudentCalendar = () => {
     },
     {
       id: 2,
-      title: "Node",
+      title: "node",
       tutor: "John Smith",
       date: new Date(2025, 4, 18, 10, 30),
       duration: 45,

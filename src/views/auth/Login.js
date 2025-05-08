@@ -2,8 +2,29 @@ import React ,{useState} from "react";
 import { Link } from "react-router-dom";
 import {login} from "../../services/apiUser";
 import {useHistory} from "react-router-dom";
+import Cookies from "js-cookie";
+
 
 export default function Login() {
+  
+   
+    const login2 = async () => {
+      try {
+        const res = await login(newAccount);
+        Cookies.set("jwt_token_abir", res.data.token, { expires: 7 });
+        Cookies.set("user_info", JSON.stringify(res.data.user), { expires: 7 });
+    
+        if (res.data.user.role === "Apprenant") {
+          history.push("/landing", { user: res.data.user });
+        } else {
+          history.push("/admin/table");
+        }
+      } catch (err) {
+        alert("Email ou mot de passe incorrect.");
+        console.log("Erreur Front :", err.response?.data?.message || err.message);
+      }
+    };
+    
   const history = useHistory();
   
    const [newAccount , setNewAccount] = useState({
@@ -14,22 +35,6 @@ export default function Login() {
     const { name , value } = e.target;
      setNewAccount({...newAccount , [name]: value})
    }
-   const login2 = async () => {
-    try {
-      const res = await login(newAccount);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user)); // Store user data
-      
-      if (res.data.user.role === "Etudiant") {
-        history.push("/profile");
-      } else {
-        history.push("/admin/table");
-      }
-    } catch (error) {
-      console.log("Erreur Front :", error);
-    }
-  };
-  
  
   return (
     <>
@@ -134,7 +139,7 @@ export default function Login() {
             <div className="flex flex-wrap mt-6 relative">
               <div className="w-1/2">
                 <Link 
-                  to="/auth/forget"
+                  to="/auth/ForgotPassword"
                   className="text-blueGray-200"
                 >
                   <small>Mot de passe oublié?</small>

@@ -1,6 +1,6 @@
 import axios from 'axios'; //cest une outil djib data mn backend  
 
-const apiurl = 'http://localhost:5001/category';
+const apiurl = 'http://localhost:5000/category';
 
 
 export async function getFormationsGroupedByCategory() {

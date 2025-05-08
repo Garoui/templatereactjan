@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { addUser } from "../../services/apiUser";
 import { getFormationsGroupedByCategory } from "../../services/apiCategory";
 import FormationDropdown from "components/Dropdowns/FormationDropdown";
-// List of Tunisian cities for the dropdown
+import Cookies from "js-cookie";
 const TUNISIAN_CITIES = [
   "Tunis", "Sfax", "Sousse", "Kairouan", "Bizerte",
   "Gabès", "Ariana", "Gafsa", "Monastir", "Ben Arous",
@@ -13,18 +13,19 @@ const TUNISIAN_CITIES = [
 ];
 
 export default function Register() {
-
   const [formations, setFormations] = useState([]);
-  const [selectedFormations, setSelectedFormations] = useState([]);
+  const [selectedFormation, setSelectedFormation] = useState(null);
   const [ville, setVille] = useState("");
   const [cv, setCv] = useState(null);
   const [specialite, setSpecialite] = useState("");
   const history = useHistory();
-  const [role, setRole] = useState("Etudiant");
+  const [role, setRole] = useState("Apprenant");
   const [newAccount, setNewAccount] = useState({
     nom: "",
+    prenom: "",
     email: "",
-    password: ""
+    password: "",
+    numTel: ""
   });
 
   const handleChange = (e) => {
@@ -36,43 +37,86 @@ export default function Register() {
     setCv(e.target.files[0]);
   };
 
- 
+  const handleRoleToggle = () => {
+    const newRole = role === "Formateur" ? "Apprenant" : "Formateur";
+    setRole(newRole);
+    // Reset only role-specific fields
+    setVille("");
+    setSelectedFormation([]);
+    setSpecialite("");
+    setCv(null);
+  };
 
-  const addData = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append("nom", newAccount.nom);
-      formData.append("email", newAccount.email);
-      formData.append("password", newAccount.password);
-      formData.append("role", role);
-
-      if (role === "Etudiant") {
-        formData.append("ville", ville);
-        selectedFormations.forEach(f => formData.append("formations", f));
-      } else if (role === "Formateur") {
-        formData.append("specialite", specialite);
-        if (cv) formData.append("cv", cv);
+      // Validate required fields
+      if (!newAccount.nom || !newAccount.prenom || !newAccount.email || !newAccount.password || !newAccount.numTel) {
+        alert("Merci de remplir tous les champs obligatoires.");
+        return;
       }
 
-      await addUser(formData);
-      history.push(role === "Etudiant" ? "/profile" : "/auth/login");
+      // Role-specific validations
+      
+
+      if (role === "Formateur" && (!specialite || !cv)) {
+        alert("Spécialité et CV sont obligatoires pour les formateurs");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("nom", newAccount.nom);
+      formData.append("prenom", newAccount.prenom);
+      formData.append("email", newAccount.email);
+      formData.append("password", newAccount.password);
+      formData.append("numTel", newAccount.numTel);
+      formData.append("role", role);
+      
+
+      if (role === "Apprenant") {
+        formData.append("ville", ville);
+        if (selectedFormation) {
+          formData.append("formations", selectedFormation.titre); }
+      } else {
+        formData.append("specialite", specialite);
+        formData.append("cv", cv);
+      }
+
+      
+      const response = await addUser(formData);
+      // Stockage dans les cookies après inscription
+    const userData = {
+      nom: newAccount.nom,
+      prenom: newAccount.prenom,
+      email: newAccount.email,
+      ville: ville,
+      role: role,
+      formation: selectedFormation?.titre,
+      specialite: role === "Formateur" ? specialite : undefined
+    };
+
+    // Stockage pour 7 jours
+    Cookies.set('user_profile', JSON.stringify(userData), {
+      expires: 7,
+      secure: true,
+      sameSite: 'strict'
+    });
+      
+      
+      console.log("Registration successful:", response.data);
+      history.push(role === "Apprenant" ? "/auth/login" : "/auth/login");
+      
     } catch (error) {
       console.error("Registration error:", error);
-      alert("Registration failed: " + (error.response?.data?.message || error.message));
+      alert("Erreur d'inscription: " + (error.response?.data?.message || error.message));
     }
   };
 
   useEffect(() => {
     getFormationsGroupedByCategory()
-      .then(data => {
-        // data est déjà sous la forme [{ categorie, formations: [...] }]
-        setFormations(data);
-      })
+      .then(data => setFormations(data))
       .catch(err => console.error("Erreur formations:", err));
   }, []);
-
-
-
 
   return (
     <div className="container mx-auto px-4 h-full">
@@ -89,31 +133,47 @@ export default function Register() {
                 <button
                   className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                   type="button"
-                  onClick={() => setRole(role === "Formateur" ? "Etudiant" : "Formateur")}
+                  onClick={handleRoleToggle}
                 >
-                  Basculer en {role === "Formateur" ? "Etudiant" : "Formateur"}
+                  Basculer en {role === "Formateur" ? "Apprenant" : "Formateur"}
                 </button>
               </div>
               <hr className="mt-6 border-b-1 border-blueGray-300" />
             </div>
 
             <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-              <form>
+              <form onSubmit={handleSubmit}>
+                {/* Common fields */}
                 <div className="relative w-full mb-3">
                   <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
-                    Nom complet
+                    Nom 
                   </label>
                   <input
                     type="text"
                     name="nom"
+                    value={newAccount.nom}
                     onChange={handleChange}
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    placeholder="Votre nom complet"
+                    placeholder="Votre nom "
                     required
                   />
                 </div>
-
-                {role === "Etudiant" && (
+                <div className="relative w-full mb-3">
+                  <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                    Prenom
+                  </label>
+                  <input
+                    type="text"
+                    name="prenom"
+                    value={newAccount.prenom}
+                    onChange={handleChange}
+                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    placeholder="Votre prenom"
+                    required
+                  />
+                </div>
+                {/* Student-specific fields */}
+                {role === "Apprenant" && (
                   <>
                     <div className="relative w-full mb-3">
                       <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
@@ -138,17 +198,17 @@ export default function Register() {
                       </label>
                       <FormationDropdown
                         formations={formations}
-                        selectedFormations={selectedFormations}
-                        setSelectedFormations={setSelectedFormations}
+                        selectedFormation={selectedFormation}
+                        setSelectedFormation={setSelectedFormation}
                       />
-
                       <small className="text-blueGray-400">
-                        {selectedFormations.length} formation(s) sélectionnée(s)
-                      </small>
+  {selectedFormation ? "1 formation sélectionnée" : "Aucune formation sélectionnée"}
+</small>
                     </div>
                   </>
                 )}
 
+                {/* Instructor-specific fields */}
                 {role === "Formateur" && (
                   <>
                     <div className="relative w-full mb-3">
@@ -180,6 +240,22 @@ export default function Register() {
                   </>
                 )}
 
+                {/* Common fields continued */}
+                <div className="relative w-full mb-3">
+                  <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                    Numéro de téléphone
+                  </label>
+                  <input
+                    type="numero"
+                    name="numTel"
+                    value={newAccount.numTel}
+                    onChange={handleChange}
+                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    placeholder="Votre numéro de téléphone"
+                    required
+                  />
+                </div>
+
                 <div className="relative w-full mb-3">
                   <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
                     Email
@@ -187,6 +263,7 @@ export default function Register() {
                   <input
                     type="email"
                     name="email"
+                    value={newAccount.email}
                     onChange={handleChange}
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     placeholder="Votre email"
@@ -201,18 +278,17 @@ export default function Register() {
                   <input
                     type="password"
                     name="password"
+                    value={newAccount.password}
                     onChange={handleChange}
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     placeholder="Votre mot de passe"
                     required
-                    minLength="6"
                   />
                 </div>
 
                 <div className="text-center mt-6">
                   <button
-                    type="button"
-                    onClick={addData}
+                    type="submit"
                     className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg w-full ease-linear transition-all duration-150"
                   >
                     Créer un compte

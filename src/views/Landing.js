@@ -1,68 +1,93 @@
 import MainNavbar from 'components/Navbars/MainNavbar';
-import React, { useState, Link } from 'react';
-import { Calendar, Users, Clock, FileText, ChevronDown, ArrowRight } from 'react-feather';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Calendar, Clock, FileText, ChevronDown } from 'react-feather';
 import StudentCalendar from "../views/auth/StudentCalendar";
-import Navbar from "components/Navbars/AuthNavbar.js";
 import Footer from "components/Footers/Footer.js";
+import StudentCourses from '../views/auth/StudentCourses';
+ 
+import Cookies from 'js-cookie';
 
 const StudentDashboard = () => {
-  const [activeTab, setActiveTab] = useState('tutors');
-  const [showEnrollModal, setShowEnrollModal] = useState(false);
+  const history = useHistory();
+  const [activeTab, setActiveTab] = useState('calendar');
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+
+  const [user, setUser] = useState(null);
+
+  const handleProfileClick = () => {
+    setProfileDropdownOpen(false);
+    history.push('/profile'); // Replace with your profile route
+  };
+
   
+    const handleLogout = () => {
+      localStorage.removeItem('token');
+      history.push('/login');
+    };
+  
+    useEffect(() => {
+      const userInfo = Cookies.get('user_info');
+      if (userInfo) {
+        setUser(JSON.parse(userInfo));
+      }
+    }, []);
   return (
     
-    <div className="min-h-screen bg-gray-50 ">
-    
-
-      
-      
-      {/* Header */}
-      <header className="bg-lightBlue-800  shadow-sm">
-      
-        <div className="container mx-auto px-4 py-5 flex justify-between items-center">
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      <div>
+      {user ? (
+        <div>
+          <h1>Welcome, {user.nom}</h1> {/* Show user name or any other data */}
+          <p>Your role: {user.role}</p>
+        </div>
+      ) : (
+        <h1>Loading...</h1>
+      )}
+    </div>
+      {/* Header Section */}
+      <header className="bg-lightBlue-800 shadow-sm">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <MainNavbar/>
-           {/* <h1 className="text-3xl font-bold text-white">Apprendre Avec Nous</h1>  */}
-          <div className="flex items-center space-x-4">
-            <span className="hidden md:inline">Mon Profil</span>
-          </div>
           <div className="relative">
             <button 
               onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-              className="flex items-center space-x-2 px-1 py-1 rounded-lg hover:bg-gray-100 transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-lightBlue-700 transition-colors"
             >
-              <span className="font-medium text-blueGray-100">Jean</span>
+              <span className="font-medium text-white">Jean</span>
               <ChevronDown 
                 size={16} 
-                className={`transition-transform ${profileDropdownOpen ? 'transform rotate-180' : ''}`}
+                className={`text-white transition-transform ${profileDropdownOpen ? 'transform rotate-180' : ''}`}
               />
             </button>
-            {/* Profile Dropdown */}
+            
             {profileDropdownOpen && (
               <div className="absolute right-0 top-12 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
-                <button href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</button>
-                <button href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Paramètres</button>
-                <button href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t">Aide</button>
-                <button href="#" className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Déconnexion</button>
+                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={handleProfileClick}>Profil</button>
+                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Paramètres</button>
+                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t">Aide</button>
+                <button className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100" onClick={handleLogout}>Déconnexion</button>
               </div>
             )}
           </div>
         </div>
       </header>
-       
+
       {/* Main Navigation */}
-      <nav className="bg-lightBlue-200  shadow-md">
+      <nav className="bg-white shadow-md">
         <div className="container mx-auto px-4">
           <div className="flex space-x-8">
-            {/* <button
-              onClick={() => setActiveTab('tutors')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'tutors' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
-            >
-              <div className="flex items-center space-x-2">
-                <Users size={18} /> 
-                <span>Tuteurs</span>
-              </div>
-            </button> */}
+
+          <button
+  onClick={() => setActiveTab('courses')}
+  className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'courses' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+>
+  <div className="flex items-center space-x-2">
+    <FileText size={18} />
+    <span>Cours</span>
+  </div>
+</button>
+
             <button
               onClick={() => setActiveTab('calendar')}
               className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'calendar' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
@@ -93,31 +118,23 @@ const StudentDashboard = () => {
           </div>
         </div>
       </nav>
-       
-      {/* Main Content */}
-      <main className="container mx-auto flex-grow flex flex-col min-h-screen px-4 py-10">
-        {/* Enrollment Banner */}
-        
-        
-        {/* Tab Content */}
-        <div className="bg-lightBlue-200 rounded-lg shadow-md p-6">
-          {activeTab === 'calendar' && 
-          
-              
-              <StudentCalendar />
-              
-            
-          }
 
+      {/* Main Content */}
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <div className="bg-lightBlue-200 rounded-lg shadow-md p-6">
+        {activeTab === 'courses' && <StudentCourses />}
+
+          {activeTab === 'calendar' && <StudentCalendar />}
+          
           {activeTab === 'history' && (
             <div>
               <h2 className="text-xl font-bold text-center mb-4">Historique des leçons</h2>
               <div className="space-y-4">
                 {[1, 2, 3].map((lesson) => (
-                  <div key={lesson} className="border-b pb-4">
+                  <div key={lesson} className="border-b  p-3 pb-4">
                     <div className="flex justify-between items-center">
                       <div>
-                        <h3 className="font-medium">Leçon avec le tuteur {lesson}</h3>
+                        <h3 className="font-medium">Leçon avec le formateur {lesson}</h3>
                         <p className="text-sm text-gray-600">Mai {10 + lesson}, 2023 - 60 minutes</p>
                       </div>
                       <button className="text-blue-500 hover:text-blue-700 text-sm font-medium">
@@ -151,8 +168,9 @@ const StudentDashboard = () => {
           )}
         </div>
       </main>
-      
-      <Footer/>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

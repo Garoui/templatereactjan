@@ -13,10 +13,10 @@ export default function MainNavbar() {
         
         <div className="flex items-center space-x-4">
         <Link
-                      className="text-black  font-bold  whitespace-nowrap uppercase"
+                      className="text-white  font-bold  whitespace-nowrap uppercase"
                       to="/"
                     >
-                      Platforme E-Learning
+                     Accueil
                     </Link>
         </div>
       </div>

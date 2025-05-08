@@ -1,8 +1,11 @@
+import MainNavbar from 'components/Navbars/MainNavbar';
+
 import React, { useState, useEffect } from "react";
 import Navbar from "components/Navbars/AuthNavbar.js";
 import Footer from "components/Footers/Footer.js";
-import { getUserById } from "../services/apiUser";
+import { getMyProfile } from "../services/apiUser";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import Cookies from 'js-cookie';
 //import Profile from '../'
 
 //import { render, screen } from '@testing-library/react';
@@ -45,33 +48,48 @@ export default function Profile() {
   useEffect(() => {
     // First try to get user from localStorage
     
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
+    const token = Cookies.get('jwt_token_abir'); // Retrieve the token from cookies
+    if (token) {
+     
       
       // Then fetch fresh data from API
-      getUserById(parsedUser._id)
+      getMyProfile(token)
         .then((res) => {
-          setUser(res.data);
-          // Update localStorage with fresh data
-          localStorage.setItem("user", JSON.stringify(res.data));
+          if (res.data && res.data.user) {
+            setUser(res.data.user); // Set the user data if found
+          }
+         
         })
         .catch((err) => {
           console.error("Erreur lors du chargement des infos utilisateur :", err);
-          // Fallback to stored user if API fails
-          setUser(parsedUser);
+          
+          
         });
     } else {
-      // If no user in localStorage, redirect to login
+      // If no user in cookies, redirect to login
       history.push("/profile");
     }
   }, [history]);
 
+  // useEffect(() => {
+  //   // Retrieve the user information from cookies
+  //   const token = Cookies.get('jwt_token_abir'); // Retrieve the token from cookies
+  //   const userData = Cookies.get('user_data'); // Retrieve user data (you should set this data on login)
+    
+  //   if (token && userData) {
+  //     // Parse the user data and set it
+  //     const user = JSON.parse(userData);
+  //     setUser(user);
+  //   } else {
+  //     // If no user or token, redirect to login
+  //     history.push("/profile");
+  //   }
+  // }, [history]);
 
 
   return (
     <>
-      <Navbar transparent />
+                
       <main className="profile-page">
         <section className="relative block h-500-px">
           <div
@@ -80,7 +98,7 @@ export default function Profile() {
               backgroundImage: "url(" + require("assets/img/backof14.jpg").default + ")",
             }}
           >
-           
+           <MainNavbar/>
           </div>
         </section>
 
@@ -123,7 +141,7 @@ export default function Profile() {
                 {user && (
                   <div>
                     <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-100">
-                      {`${user.nom} ${user.prenom || ""}`}
+                      {`${user.nom} `}
                     </h3>
                     <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
                       <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
