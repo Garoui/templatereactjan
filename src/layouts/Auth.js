@@ -12,7 +12,6 @@ import Login from "views/auth/Login.js";
 import ForgotPassword from "views/auth/ForgotPassword";
 import ResetPassword from "views/auth/ResetPassword";
 import Register from "views/auth/Register.js";
-
 export default function Auth() {
   return (
     <>
@@ -28,9 +27,10 @@ export default function Auth() {
           ></div>
           <Switch>
           <Route path="/auth/login" exact component={Login} />
-          <Route path="/auth/ForgotPassword" exact component={ForgotPassword} />
-          <Route path="/auth/ResetPassword" exact component={ResetPassword} />
+          <Route path="/auth/forgotPassword" exact component={ForgotPassword} />
+          <Route path="/auth/resetPassword" exact component={ResetPassword} />
           <Route path="/auth/register" exact component={Register} />
+
             <Redirect from="/auth" to="/auth/login" />
           </Switch>
           <FooterSmall absolute />

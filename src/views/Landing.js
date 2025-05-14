@@ -1,177 +1,315 @@
-import MainNavbar from 'components/Navbars/MainNavbar';
+/*eslint-disable*/
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Calendar, Clock, FileText, ChevronDown } from 'react-feather';
 import StudentCalendar from "../views/auth/StudentCalendar";
-import Footer from "components/Footers/Footer.js";
 import StudentCourses from '../views/auth/StudentCourses';
- 
+import NotificationDropdown from "components/Dropdowns/NotificationDropdown.js";
+import UserDropdown from "components/Dropdowns/UserDropdown.js";
 import Cookies from 'js-cookie';
 
 const StudentDashboard = () => {
-  const history = useHistory();
+  const [collapseShow, setCollapseShow] = React.useState("hidden");
   const [activeTab, setActiveTab] = useState('calendar');
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-
   const [user, setUser] = useState(null);
+  const history = useHistory();
 
-  const handleProfileClick = () => {
-    setProfileDropdownOpen(false);
-    history.push('/profile'); // Replace with your profile route
+  useEffect(() => {
+    const userInfo = Cookies.get('user_data');
+    if (userInfo) {
+      setUser(JSON.parse(userInfo));
+    }
+  }, []);
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'courses':
+        return <StudentCourses />;
+      case 'calendar':
+        return <StudentCalendar />;
+      case 'history':
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold">Historique des leçons</h2>
+            <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+              <div className="block w-full overflow-x-auto">
+                <table className="items-center w-full bg-transparent border-collapse">
+                  <thead>
+                    <tr>
+                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        Leçon
+                      </th>
+                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        Date
+                      </th>
+                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        Durée
+                      </th>
+                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[1, 2, 3].map((lesson) => (
+                      <tr key={lesson}>
+                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          Leçon avec le formateur {lesson}
+                        </td>
+                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          Mai {10 + lesson}, 2023
+                        </td>
+                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          60 minutes
+                        </td>
+                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                          <button className="text-blue-500 hover:text-blue-700 text-sm font-medium">
+                            Voir les détails
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        );
+      case 'resources':
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold">Ressources pédagogiques</h2>
+            <div className="flex flex-wrap">
+              {['Guide de grammaire', 'Listes de vocabulaire', 'Exercices pratiques'].map((resource, index) => (
+                <div key={index} className="w-full md:w-4/12 px-4">
+                  <div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 shadow-lg">
+                    <div className="p-4 flex-auto">
+                      <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-3 mx-auto">
+                        <FileText className="text-blue-500" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-center mb-2">{resource}</h3>
+                      <p className="text-sm text-blueGray-500 text-center mb-4">
+                        Matériels utiles pour compléter votre apprentissage
+                      </p>
+                      <div className="text-center">
+                        <button className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
+                          Télécharger
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
-  
-    const handleLogout = () => {
-      localStorage.removeItem('token');
-      history.push('/login');
-    };
-  
-    useEffect(() => {
-      const userInfo = Cookies.get('user_info');
-      if (userInfo) {
-        setUser(JSON.parse(userInfo));
-      }
-    }, []);
   return (
-    
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      <div>
-      {user ? (
-        <div>
-          <h1>Welcome, {user.nom}</h1> {/* Show user name or any other data */}
-          <p>Your role: {user.role}</p>
-        </div>
-      ) : (
-        <h1>Loading...</h1>
-      )}
-    </div>
-      {/* Header Section */}
-      <header className="bg-lightBlue-800 shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <MainNavbar/>
-          <div className="relative">
-            <button 
-              onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-lightBlue-700 transition-colors"
-            >
-              <span className="font-medium text-white">Jean</span>
-              <ChevronDown 
-                size={16} 
-                className={`text-white transition-transform ${profileDropdownOpen ? 'transform rotate-180' : ''}`}
-              />
-            </button>
-            
-            {profileDropdownOpen && (
-              <div className="absolute right-0 top-12 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
-                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={handleProfileClick}>Profil</button>
-                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Paramètres</button>
-                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t">Aide</button>
-                <button className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100" onClick={handleLogout}>Déconnexion</button>
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
-
-      {/* Main Navigation */}
-      <nav className="bg-white shadow-md">
-        <div className="container mx-auto px-4">
-          <div className="flex space-x-8">
-
+    <>
+      {/* Sidebar */}
+      <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+        <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
+          {/* Toggler */}
           <button
-  onClick={() => setActiveTab('courses')}
-  className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'courses' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
->
-  <div className="flex items-center space-x-2">
-    <FileText size={18} />
-    <span>Cours</span>
-  </div>
-</button>
+            className="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
+            type="button"
+            onClick={() => setCollapseShow("bg-white m-2 py-3 px-6")}
+          >
+            <i className="fas fa-bars"></i>
+          </button>
+          {/* Brand */}
+          <Link
+            className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
+            to="/student/dashboard"
+          >
+            Tableau de Bord Apprenant
+          </Link>
+          {/* User */}
+          <ul className="md:hidden items-center flex flex-wrap list-none">
+            <li className="inline-block relative">
+              <NotificationDropdown />
+              
+            </li>
+            <li className="inline-block relative">
+              <UserDropdown />
+            </li>
+          </ul>
+          {/* Collapse */}
+          <div
+            className={
+              "md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded " +
+              collapseShow
+            }
+          >
+            {/* Collapse header */}
+            <div className="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200">
+              <div className="flex flex-wrap">
+                <div className="w-6/12">
+                  <Link
+                    className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
+                    to="/student/dashboard"
+                  >
+                    Apprenant
+                  </Link>
+                </div>
+                <div className="w-6/12 flex justify-end">
+                  <button
+                    type="button"
+                    className="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
+                    onClick={() => setCollapseShow("hidden")}
+                  >
+                    <i className="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
 
-            <button
-              onClick={() => setActiveTab('calendar')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'calendar' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
-            >
-              <div className="flex items-center space-x-2">
-                <Calendar size={18} />
-                <span>Calendrier</span>
-              </div>
-            </button>
-            <button
-              onClick={() => setActiveTab('history')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'history' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
-            >
-              <div className="flex items-center space-x-2">
-                <Clock size={18} />
-                <span>Historique des leçons</span>
-              </div>
-            </button>
-            <button
-              onClick={() => setActiveTab('resources')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'resources' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
-            >
-              <div className="flex items-center space-x-2">
-                <FileText size={18} />
-                <span>Ressources</span>
-              </div>
-            </button>
+            {/* Navigation */}
+            <ul className="md:flex-col md:min-w-full flex flex-col list-none">
+              <li className="items-center">
+                <button
+                  onClick={() => setActiveTab('courses')}
+                  className={
+                    "text-xs uppercase py-3 font-bold block w-full text-left " +
+                    (activeTab === 'courses' 
+                      ? "text-lightBlue-500 hover:text-lightBlue-600" 
+                      : "text-blueGray-700 hover:text-blueGray-500")
+                  }
+                >
+                  <i
+                    className={
+                      "fas fa-book mr-2 text-sm " +
+                      (activeTab === 'courses' 
+                        ? "opacity-75" 
+                        : "text-blueGray-300")
+                    }
+                  ></i>{" "}
+                  Mes Cours
+                </button>
+              </li>
+
+              <li className="items-center">
+                <button
+                  onClick={() => setActiveTab('calendar')}
+                  className={
+                    "text-xs uppercase py-3 font-bold block w-full text-left " +
+                    (activeTab === 'calendar' 
+                      ? "text-lightBlue-500 hover:text-lightBlue-600" 
+                      : "text-blueGray-700 hover:text-blueGray-500")
+                  }
+                >
+                  <i
+                    className={
+                      "fas fa-calendar mr-2 text-sm " +
+                      (activeTab === 'calendar' 
+                        ? "opacity-75" 
+                        : "text-blueGray-300")
+                    }
+                  ></i>{" "}
+                  Calendrier
+                </button>
+              </li>
+
+              <li className="items-center">
+                <button
+                  onClick={() => setActiveTab('history')}
+                  className={
+                    "text-xs uppercase py-3 font-bold block w-full text-left " +
+                    (activeTab === 'history' 
+                      ? "text-lightBlue-500 hover:text-lightBlue-600" 
+                      : "text-blueGray-700 hover:text-blueGray-500")
+                  }
+                >
+                  <i
+                    className={
+                      "fas fa-history mr-2 text-sm " +
+                      (activeTab === 'history' 
+                        ? "opacity-75" 
+                        : "text-blueGray-300")
+                    }
+                  ></i>{" "}
+                  Historique
+                </button>
+              </li>
+
+              <li className="items-center">
+                <button
+                  onClick={() => setActiveTab('resources')}
+                  className={
+                    "text-xs uppercase py-3 font-bold block w-full text-left " +
+                    (activeTab === 'resources' 
+                      ? "text-lightBlue-500 hover:text-lightBlue-600" 
+                      : "text-blueGray-700 hover:text-blueGray-500")
+                  }
+                >
+                  <i
+                    className={
+                      "fas fa-file-alt mr-2 text-sm " +
+                      (activeTab === 'resources' 
+                        ? "opacity-75" 
+                        : "text-blueGray-300")
+                    }
+                  ></i>{" "}
+                  Ressources
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
       </nav>
 
       {/* Main Content */}
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="bg-lightBlue-200 rounded-lg shadow-md p-6">
-        {activeTab === 'courses' && <StudentCourses />}
+      <div className="relative md:ml-64 bg-blueGray-100">
+        {/* Top Navigation */}
+        <nav className="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
+          <div className="w-full mx-autp items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
+            <h2 className="text-white text-sm uppercase hidden lg:inline-block font-semibold">
+              {activeTab === 'courses' && 'Mes Cours'}
+              {activeTab === 'calendar' && 'Calendrier des Sessions'}
+              {activeTab === 'history' && 'Historique des Leçons'}
+              {activeTab === 'resources' && 'Ressources Pédagogiques'}
+            </h2>
+            
+            <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
+              <NotificationDropdown />
+              <UserDropdown />
+            </ul>
+          </div>
+        </nav>
 
-          {activeTab === 'calendar' && <StudentCalendar />}
-          
-          {activeTab === 'history' && (
-            <div>
-              <h2 className="text-xl font-bold text-center mb-4">Historique des leçons</h2>
-              <div className="space-y-4">
-                {[1, 2, 3].map((lesson) => (
-                  <div key={lesson} className="border-b  p-3 pb-4">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <h3 className="font-medium">Leçon avec le formateur {lesson}</h3>
-                        <p className="text-sm text-gray-600">Mai {10 + lesson}, 2023 - 60 minutes</p>
+        {/* Content */}
+        <div className="relative bg-blueGray-100 md:pt-32 pb-32 pt-12">
+          <div className="px-4 md:px-10 mx-auto w-full">
+            <div className="flex flex-wrap">
+              {/* Main Content Area */}
+              <div className="w-full px-4">
+                <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                  <div className="rounded-t mb-0 px-4 py-3 border-0">
+                    <div className="flex flex-wrap items-center">
+                      <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+                        <h3 className="font-semibold text-base text-blueGray-700">
+                          {activeTab === 'courses' && 'Liste de mes cours'}
+                          {activeTab === 'calendar' && 'Calendrier des sessions'}
+                          {activeTab === 'history' && 'Historique des leçons complétées'}
+                          {activeTab === 'resources' && 'Ressources disponibles'}
+                        </h3>
                       </div>
-                      <button className="text-blue-500 hover:text-blue-700 text-sm font-medium">
-                        Voir les détails
-                      </button>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'resources' && (
-            <div>
-              <h2 className="text-xl font-bold text-center mb-4">Ressources pédagogiques</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {['Guide de grammaire', 'Listes de vocabulaire', 'Exercices pratiques'].map((resource, index) => (
-                  <div key={index} className="border rounded-lg p-4 hover:shadow-md transition duration-200">
-                    <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-3">
-                      <FileText className="text-blue-500" />
-                    </div>
-                    <h3 className="font-bold mb-2">{resource}</h3>
-                    <p className="text-sm text-gray-600 mb-3">Matériels utiles pour compléter votre apprentissage</p>
-                    <button className="text-blue-500 hover:text-blue-700 text-sm font-medium">
-                      Télécharger
-                    </button>
+                  <div className="block w-full overflow-x-auto p-6">
+                    {renderTabContent()}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
-      </main>
-
-      {/* Footer */}
-      <Footer />
-    </div>
+      </div>
+    </>
   );
 };
 

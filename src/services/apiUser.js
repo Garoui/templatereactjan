@@ -1,5 +1,5 @@
 //cnx bin front w back sart ala rest api
-
+//import Cookies from 'js-cookie';
 
 import axios from 'axios'; //cest une outil djib data mn backend  
 
@@ -13,6 +13,12 @@ import axios from 'axios'; //cest une outil djib data mn backend
     });
     
 }
+export async function getAllApprenants(role) {  // async non bloqq khtr fonction bch tokhrj m serveur
+  const params = role ? { role } : {};
+  return await axios.get(`${apiurl}/getAllUsers`,{
+    withCredentials: true,
+    params,
+  });}
 
 // export async function register(formData) {
 //   return await axios.post(`${apiurl}/register`,formData)
@@ -42,9 +48,9 @@ export async function deleteUsersById(id) {
   return await axios.delete(`${apiurl}/deleteUser/${id}`)
 }
 
-export async function getMyProfile(token) {
+export async function getMyProfile() {
   
-  return await axios.get(`${apiurl}/${token}`,{
+  return await axios.get(`${apiurl}/getMyProfile`,{
     withCredentials: true, // For cookies
 
     //  headers: {
@@ -62,13 +68,21 @@ export async function getAllFormateurs() {  // async non bloqq khtr fonction bch
 export async function updateUser(userData,idUser) {
   return await axios.put(`${apiurl}/updateUser/${idUser}`,userData)
 }
+//const token = Cookies.get('jwt_token_abir');
 
-
-export async function updateProfile(userData,token) {
-  return await axios.put(`${apiurl}/updateUser/${token}`,userData,{
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
+export async function updateProfile(formData) {
+  return await axios.put(`${apiurl}/updateUser`,formData,{
+    withCredentials: true,
+      //  headers: {
+      //   Authorization: `Bearer ${token}`
+      // }
 });
 
+}
+
+
+export async function getUserByID(id) {
+  return await axios.get(`${ apiurl }/User/${ id }`,{
+    withCredentials: true,
+});
 }

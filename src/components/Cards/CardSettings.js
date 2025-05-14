@@ -29,12 +29,12 @@ export default function CardSettings() {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Username
+                    Phone
                   </label>
                   <input
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    defaultValue="lucky.jesse"
+                    
                   />
                 </div>
               </div>
@@ -44,12 +44,12 @@ export default function CardSettings() {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Email address
+                    Address Email
                   </label>
                   <input
                     type="email"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    defaultValue="jesse@example.com"
+                    
                   />
                 </div>
               </div>
@@ -59,12 +59,12 @@ export default function CardSettings() {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    First Name
+                   Nom
                   </label>
                   <input
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    defaultValue="Lucky"
+                    
                   />
                 </div>
               </div>
@@ -74,12 +74,43 @@ export default function CardSettings() {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Last Name
+                   Prenom
                   </label>
                   <input
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    defaultValue="Jesse"
+                   
+                  />
+                </div>
+              </div>
+              <div className="w-full lg:w-6/12 px-4">
+                <div className="relative w-full mb-3">
+                  <label
+                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="grid-password"
+                  >
+                    Ville
+                  </label>
+                  <input
+                    type="email"
+                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                   
+                  />
+                </div>
+              </div>
+
+              <div className="w-full lg:w-6/12 px-4">
+                <div className="relative w-full mb-3">
+                  <label
+                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="grid-password"
+                  >
+                    Formation
+                  </label>
+                  <input
+                    type="email"
+                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    
                   />
                 </div>
               </div>
@@ -92,7 +123,7 @@ export default function CardSettings() {
             </h6>
             <div className="flex flex-wrap">
               <div className="w-full lg:w-12/12 px-4">
-                <div className="relative w-full mb-3">
+                {/* <div className="relative w-full mb-3">
                   <label
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
@@ -104,24 +135,10 @@ export default function CardSettings() {
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
                   />
-                </div>
+                </div> */}
               </div>
-              <div className="w-full lg:w-4/12 px-4">
-                <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
-                    City
-                  </label>
-                  <input
-                    type="email"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    defaultValue="New York"
-                  />
-                </div>
-              </div>
-              <div className="w-full lg:w-4/12 px-4">
+              
+              {/* <div className="w-full lg:w-4/12 px-4">
                 <div className="relative w-full mb-3">
                   <label
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -135,8 +152,8 @@ export default function CardSettings() {
                     defaultValue="United States"
                   />
                 </div>
-              </div>
-              <div className="w-full lg:w-4/12 px-4">
+              </div> */}
+              {/* <div className="w-full lg:w-4/12 px-4">
                 <div className="relative w-full mb-3">
                   <label
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -150,7 +167,7 @@ export default function CardSettings() {
                     defaultValue="Postal Code"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <hr className="mt-6 border-b-1 border-blueGray-300" />

@@ -1,3 +1,4 @@
+
 import React ,{useState} from "react";
 import { Link } from "react-router-dom";
 import {login} from "../../services/apiUser";
@@ -12,12 +13,12 @@ export default function Login() {
       try {
         const res = await login(newAccount);
         Cookies.set("jwt_token_abir", res.data.token, { expires: 7 });
-        Cookies.set("user_info", JSON.stringify(res.data.user), { expires: 7 });
+        Cookies.set("user_data", JSON.stringify(res.data.user), { expires: 7 });
     
         if (res.data.user.role === "Apprenant") {
           history.push("/landing", { user: res.data.user });
         } else {
-          history.push("/admin/table");
+          history.push("/formateur");
         }
       } catch (err) {
         alert("Email ou mot de passe incorrect.");
@@ -127,8 +128,11 @@ export default function Login() {
                   <div className="text-center mt-6">
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                      type="button"
-                      onClick={()=>{login2(newAccount)}}
+                      type="submit"
+                      onClick={(e) => {
+                        e.preventDefault(); // éviter le rechargement de la page
+                        login2();
+                      }}
                     >
                       Se connecter
                     </button>
