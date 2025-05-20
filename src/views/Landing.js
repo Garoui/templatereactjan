@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Calendar, Clock, FileText, ChevronDown } from 'react-feather';
-import StudentCalendar from "../views/auth/StudentCalendar";
+import StudentCalendar from "./auth/ApprenantCalendar";
 import StudentCourses from '../views/auth/StudentCourses';
 import NotificationDropdown from "components/Dropdowns/NotificationDropdown.js";
 import UserDropdown from "components/Dropdowns/UserDropdown.js";

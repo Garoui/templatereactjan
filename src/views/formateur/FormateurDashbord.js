@@ -90,12 +90,12 @@ const FormateurDashboard = () => {
         switch (activeTab) {
             case 'calendar':
                 return <FormateurCalendar />;
-            case 'courses':
-                return (
-                    <div className="space-y-6">
-                        <FormateurCourses />
-                    </div>
-                );
+            // case 'courses':
+            //     return (
+            //         <div className="space-y-6">
+            //             <FormateurCourses />
+            //         </div>
+            //     );
             case 'students':
                 return (
                     <div className="space-y-6">
@@ -230,7 +230,7 @@ const FormateurDashboard = () => {
 
                         {/* Navigation */}
                         <ul className="md:flex-col md:min-w-full flex flex-col list-none">
-                            <li className="items-center">
+                            {/* <li className="items-center">
                                 <button
                                     onClick={() => setActiveTab('courses')}
                                     className={
@@ -250,7 +250,7 @@ const FormateurDashboard = () => {
                                     ></i>{" "}
                                     Mes Cours
                                 </button>
-                            </li>
+                            </li> */}
 
                             <li className="items-center">
                                 <button

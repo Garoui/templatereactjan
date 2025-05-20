@@ -23,58 +23,58 @@ const CardCalendarAdmin = () => {
     sessions: false
   });
 
-  useEffect(() => {
-    let isMounted = true;
+useEffect(() => {
+  let isMounted = true;
 
-    const fetchData = async () => {
-      try {
-        setLoading({ formateurs: true, apprenants: true, sessions: true });
+  const fetchData = async () => {
+    try {
+      setLoading({ formateurs: true, apprenants: true, sessions: true });
+      
+      const [formateursRes, apprenantsRes, sessionsRes] = await Promise.all([
+        getAllUsers("Formateur"),
+        getAllUsers("Apprenant"),
+        getSessions()
+      ]);
+
+      if (isMounted) {
+        setFormateurs(formateursRes.data?.formateurListe || []);
+        setApprenants(apprenantsRes.data?.apprenantListe || []);
         
-        const [formateursRes, apprenantsRes, sessionsRes] = await Promise.all([
-          getAllUsers("Formateur"),
-          getAllUsers("Apprenant"),
-          getSessions()
-        ]);
-
-        if (isMounted) {
-          setFormateurs(formateursRes.data?.formateurListe || []);
-          setApprenants(apprenantsRes.data?.apprenantListe || []);
-          
-          const formatted = sessionsRes.data.map(session => ({
-            id: session._id,
-            title: session.title,
-            start: session.start,
-            end: session.end,
-            formateurId: session.formateur?._id,
-            formateurName: session.formateur ? 
-              `${session.formateur.prenom} ${session.formateur.nom}` : 'Non assigné',
-            apprenantIds: session.apprenants?.map(a => a._id) || [],
-            apprenantNames: session.apprenants?.length > 0 ?
-              session.apprenants.map(a => `${a.prenom} ${a.nom}`).join(', ') :
-              'Aucun',
-            type: session.type,
-            description: session.description
-          }));
-          
-          setEvents(formatted);
-        }
-      } catch (error) {
-        if (isMounted) {
-          console.error("Error fetching data:", error);
-        }
-      } finally {
-        if (isMounted) {
-          setLoading({ formateurs: false, apprenants: false, sessions: false });
-        }
+        const formatted = sessionsRes.data.map(session => ({
+          id: session._id,
+          title: session.title,
+          start: session.start,
+          end: session.end,
+          formateurId: session.formateur?._id,
+          formateurName: session.formateur ? 
+            `${session.formateur.prenom} ${session.formateur.nom}` : 'Non assigné',
+          apprenantIds: session.apprenants?.map(a => a._id) || [],
+          apprenantNames: session.apprenants?.length > 0 ?
+            session.apprenants.map(a => `${a.prenom} ${a.nom}`).join(', ') :
+            'Aucun',
+          type: session.type,
+          description: session.description
+        }));
+        
+        setEvents(formatted);
       }
-    };
+    } catch (error) {
+      if (isMounted) {
+        console.error("Error fetching data:", error);
+      }
+    } finally {
+      if (isMounted) {
+        setLoading({ formateurs: false, apprenants: false, sessions: false });
+      }
+    }
+  };
 
-    fetchData();
+  fetchData();
 
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  return () => {
+    isMounted = false;
+  };
+}, []);
 
   const handleEditSession = (sessionId) => {
     const session = events.find(e => e.id === sessionId);
@@ -104,6 +104,33 @@ const CardCalendarAdmin = () => {
         }
       }
     });
+  };
+
+    const fetchFormateurs = async () => {
+    try {
+      console.log("Fetching formateurs...");
+      const res = await getAllUsers("Formateur");
+      console.log("Formateurs response:", res);
+      const formateursData = res.data?.formateurListe || [];
+      setFormateurs(formateursData);
+    } catch (error) {
+      console.error("Error fetching formateurs:", error);
+      setFormateurs([]);
+    }
+  };
+
+  // Updated fetchApprenants function
+  const fetchApprenants = async () => {
+    try {
+      console.log("Fetching apprenants...");
+      const res = await getAllUsers("Apprenant");
+      console.log("Apprenants response:", res);
+      const apprenantsData = res.data?.apprenantListe || [];
+      setApprenants(apprenantsData);
+    } catch (error) {
+      console.error("Error fetching apprenants:", error);
+      setApprenants([]);
+    }
   };
 
   const fetchSessions = async () => {

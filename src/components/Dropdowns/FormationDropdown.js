@@ -30,7 +30,7 @@ export default function FormationDropdown({
         type="button"
         onClick={() => setOpen(!open)}
         className="w-full border px-3 py-2 rounded text-left bg-white"
-      >Selection une seul formation    :
+      >
         {selectedFormation 
           ? selectedFormation.titre
           : "Sélectionnez une formation"}

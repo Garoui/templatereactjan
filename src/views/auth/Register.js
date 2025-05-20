@@ -33,10 +33,18 @@ export default function Register() {
     setNewAccount({ ...newAccount, [name]: value });
   };
 
-  const handleFileChange = (e) => {
-    setCv(e.target.files[0]);
+  // const handleFileChange = (e) => {
+  //   setCv(e.target.files[0]);
+  // };
+ const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === "application/pdf") {
+      setCv(file);
+    } else {
+      alert("Veuillez sélectionner un fichier PDF valide.");
+      e.target.value = null; // Reset the input
+    }
   };
-
   const handleRoleToggle = () => {
     const newRole = role === "Formateur" ? "Apprenant" : "Formateur";
     setRole(newRole);
@@ -226,17 +234,42 @@ export default function Register() {
                     </div>
 
                     <div className="relative w-full mb-3">
-                      <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
-                        CV (PDF)
-                      </label>
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        onChange={handleFileChange}
-                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        required
-                      />
+                <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                  CV (PDF)
+                </label>
+                <div className="flex items-center justify-center w-full">
+                  <label className="flex flex-col w-full h-32 border-2 border-blueGray-300 border-dashed hover:bg-blueGray-50 hover:border-blueGray-400 transition-all duration-150 rounded-md cursor-pointer">
+                    <div className="flex flex-col items-center justify-center pt-7">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-blueGray-400 group-hover:text-blueGray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                      </svg>
+                      <p className="pt-1 text-sm tracking-wider text-blueGray-400 group-hover:text-blueGray-600">
+                        {cv ? cv.name : 'Téléversez votre CV (PDF)'}
+                      </p>
+                      {!cv && (
+                        <p className="text-xs text-blueGray-400 mt-2">
+                          Cliquez pour sélectionner un fichier
+                        </p>
+                      )}
                     </div>
+                    <input 
+                      type="file" 
+                      accept=".pdf" 
+                      onChange={handleFileChange} 
+                      className="hidden" 
+                      required 
+                    />
+                  </label>
+                </div>
+                {cv && (
+                  <div className="flex items-center mt-2 text-sm text-green-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Fichier sélectionné: {cv.name}
+                  </div>
+                )}
+                </div>
                   </>
                 )}
 

@@ -15,6 +15,7 @@ import Formateur from "layouts/Formateur.js"
 import Landing from "views/Landing.js";
 import Profile from "views/Profile.js";
 import Index from "views/Index.js";
+import SessionModal from "views/SessionModal";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const isAuthenticated = !!Cookies.get("jwt_token_abir");
@@ -42,7 +43,9 @@ ReactDOM.render(
 
       {/* add routes without layouts */}
       <Route path="/landing" exact component={Landing} />
-      <Route path="/profile" exact component={Profile} />
+            <Route path="/profile" exact component={Profile} />
+      <Route path="/sessionModal" exact component={SessionModal} />
+
       <Route path="/" exact component={Index} />
       {/* Protected routes */}
       <PrivateRoute path="/profile" exact component={Profile} />
