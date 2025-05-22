@@ -16,12 +16,10 @@ export default function Login() {
         Cookies.set("user_data", JSON.stringify(res.data.user), { expires: 7 });
     const role = res.data.user.role;
         if (role === "Apprenant") {
-          history.push("/landing", { user: res.data.user });
+          history.push("/studentDashboard", { user: res.data.user });
         } else if (role === "Formateur") {
           history.push("/formateur");
-         } else if (role === "Admin") {
-            history.push("/admin");
-         }
+        }
         
       } catch (err) {
         alert("Email ou mot de passe incorrect.");

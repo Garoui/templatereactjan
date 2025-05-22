@@ -16,7 +16,7 @@ moment.locale('fr');
 const FormateurDashboard = () => {
     const [collapseShow, setCollapseShow] = React.useState("hidden");
     const [users, setUsers] = useState([]);
-    const [activeTab, setActiveTab] = useState('calendar');
+    const [activeTab, setActiveTab] = useState('courses');
     const [user, setUser] = useState(null);
     const [showSessionModal, setShowSessionModal] = useState(false);
     const [newSession, setNewSession] = useState({

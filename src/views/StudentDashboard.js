@@ -3,14 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Calendar, Clock, FileText, ChevronDown } from 'react-feather';
 import StudentCalendar from "./auth/ApprenantCalendar";
-import StudentCourses from '../views/auth/StudentCourses';
+import StudentCourses from './auth/StudentCourses';
 import NotificationDropdown from "components/Dropdowns/NotificationDropdown.js";
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
 import Cookies from 'js-cookie';
 
-const StudentDashboard = () => {
+const  StudentDashboard = () => {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
-  const [activeTab, setActiveTab] = useState('calendar');
+  const [activeTab, setActiveTab] = useState('courses');
   const [user, setUser] = useState(null);
   const history = useHistory();
 
@@ -27,54 +27,7 @@ const StudentDashboard = () => {
         return <StudentCourses />;
       case 'calendar':
         return <StudentCalendar />;
-      case 'history':
-        return (
-          <div className="space-y-4">
-            <h2 className="text-xl font-bold">Historique des leçons</h2>
-            <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-              <div className="block w-full overflow-x-auto">
-                <table className="items-center w-full bg-transparent border-collapse">
-                  <thead>
-                    <tr>
-                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                        Leçon
-                      </th>
-                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                        Date
-                      </th>
-                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                        Durée
-                      </th>
-                      <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[1, 2, 3].map((lesson) => (
-                      <tr key={lesson}>
-                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          Leçon avec le formateur {lesson}
-                        </td>
-                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          Mai {10 + lesson}, 2023
-                        </td>
-                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          60 minutes
-                        </td>
-                        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          <button className="text-blue-500 hover:text-blue-700 text-sm font-medium">
-                            Voir les détails
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        );
+     
       case 'resources':
         return (
           <div className="space-y-4">
@@ -214,27 +167,7 @@ const StudentDashboard = () => {
                 </button>
               </li>
 
-              <li className="items-center">
-                <button
-                  onClick={() => setActiveTab('history')}
-                  className={
-                    "text-xs uppercase py-3 font-bold block w-full text-left " +
-                    (activeTab === 'history' 
-                      ? "text-lightBlue-500 hover:text-lightBlue-600" 
-                      : "text-blueGray-700 hover:text-blueGray-500")
-                  }
-                >
-                  <i
-                    className={
-                      "fas fa-history mr-2 text-sm " +
-                      (activeTab === 'history' 
-                        ? "opacity-75" 
-                        : "text-blueGray-300")
-                    }
-                  ></i>{" "}
-                  Historique
-                </button>
-              </li>
+             
 
               <li className="items-center">
                 <button

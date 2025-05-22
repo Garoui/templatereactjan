@@ -22,7 +22,7 @@ export async function getFormateurSessions() {
 }
 
 export async function createSession(sessionData) {
-  return await axios.post(`${apiurl}/`, sessionData, { withCredentials: true });
+  return await axios.post(`${apiurl}/createSession`, sessionData, { withCredentials: true });
 }
 
 export async function updateSession(id, sessionData) {

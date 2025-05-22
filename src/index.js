@@ -12,7 +12,7 @@ import Auth from "layouts/Auth.js";
 import Formateur from "layouts/Formateur.js"
 // views without layouts
 
-import Landing from "views/Landing.js";
+import  ApprenantDashboard from "views/StudentDashboard.js";
 import Profile from "views/Profile.js";
 import Index from "views/Index.js";
 import SessionModal from "views/SessionModal";
@@ -42,7 +42,7 @@ ReactDOM.render(
       <Route path="/formateur" component={Formateur} />
 
       {/* add routes without layouts */}
-      <Route path="/landing" exact component={Landing} />
+      <Route path="/ apprenantDashboard" exact component={ ApprenantDashboard} />
             <Route path="/profile" exact component={Profile} />
       <Route path="/sessionModal" exact component={SessionModal} />
 
@@ -86,7 +86,7 @@ ReactDOM.render(
 //       <Route path="/auth/*" element={<Auth />} />
       
 //       {/* Routes publiques sans layout */}
-//       <Route path="/landing" element={<Landing />} />
+//       <Route path="/ apprenantDashboard" element={< ApprenantDashboard />} />
 //       <Route path="/" element={<Index />} />
       
 //       {/* Route protégée */}

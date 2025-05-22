@@ -23,58 +23,58 @@ const CardCalendarAdmin = () => {
     sessions: false
   });
 
-  useEffect(() => {
-    let isMounted = true;
+useEffect(() => {
+  let isMounted = true;
 
-    const fetchData = async () => {
-      try {
-        setLoading({ formateurs: true, apprenants: true, sessions: true });
+  const fetchData = async () => {
+    try {
+      setLoading({ formateurs: true, apprenants: true, sessions: true });
+      
+      const [formateursRes, apprenantsRes, sessionsRes] = await Promise.all([
+        getAllUsers("Formateur"),
+        getAllUsers("Apprenant"),
+        getSessions()
+      ]);
+
+      if (isMounted) {
+        setFormateurs(formateursRes.data?.formateurListe || []);
+        setApprenants(apprenantsRes.data?.apprenantListe || []);
         
-        const [formateursRes, apprenantsRes, sessionsRes] = await Promise.all([
-          getAllUsers("Formateur"),
-          getAllUsers("Apprenant"),
-          getSessions()
-        ]);
-
-        if (isMounted) {
-          setFormateurs(formateursRes.data?.formateurListe || []);
-          setApprenants(apprenantsRes.data?.apprenantListe || []);
-          
-          const formatted = sessionsRes.data.map(session => ({
-            id: session._id,
-            title: session.title,
-            start: session.start,
-            end: session.end,
-            formateurId: session.formateur?._id,
-            formateurName: session.formateur ? 
-              `${session.formateur.prenom} ${session.formateur.nom}` : 'Non assigné',
-            apprenantIds: session.apprenants?.map(a => a._id) || [],
-            apprenantNames: session.apprenants?.length > 0 ?
-              session.apprenants.map(a => `${a.prenom} ${a.nom}`).join(', ') :
-              'Aucun',
-            type: session.type,
-            description: session.description
-          }));
-          
-          setEvents(formatted);
-        }
-      } catch (error) {
-        if (isMounted) {
-          console.error("Error fetching data:", error);
-        }
-      } finally {
-        if (isMounted) {
-          setLoading({ formateurs: false, apprenants: false, sessions: false });
-        }
+        const formatted = sessionsRes.data.map(session => ({
+          id: session._id,
+          title: session.title,
+          start: session.start,
+          end: session.end,
+          formateurId: session.formateur?._id,
+          formateurName: session.formateur ? 
+            `${session.formateur.prenom} ${session.formateur.nom}` : 'Non assigné',
+          apprenantIds: session.apprenants?.map(a => a._id) || [],
+          apprenantNames: session.apprenants?.length > 0 ?
+            session.apprenants.map(a => `${a.prenom} ${a.nom}`).join(', ') :
+            'Aucun',
+          type: session.type,
+          description: session.description
+        }));
+        
+        setEvents(formatted);
       }
-    };
+    } catch (error) {
+      if (isMounted) {
+        console.error("Error fetching data:", error);
+      }
+    } finally {
+      if (isMounted) {
+        setLoading({ formateurs: false, apprenants: false, sessions: false });
+      }
+    }
+  };
 
-    fetchData();
+  fetchData();
 
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  return () => {
+    isMounted = false;
+  };
+}, []);
 
   const handleEditSession = (sessionId) => {
     const session = events.find(e => e.id === sessionId);
@@ -105,6 +105,8 @@ const CardCalendarAdmin = () => {
       }
     });
   };
+
+  
 
   const fetchSessions = async () => {
     try {
@@ -156,35 +158,75 @@ const CardCalendarAdmin = () => {
     });
   };
 
-  const handleSubmit = async (values) => {
-    try {
-      const sessionData = {
-        title: values.title,
-        start: values.time[0].toISOString(),
-        end: values.time[1].toISOString(),
-        formateur: values.formateur,
-        apprenants: values.apprenants,
-        type: values.type,
-        description: values.description
-      };
+ const handleSubmit = async (values) => {
+  try {
+    // Properly combine date and time
+    const start = moment(values.date)
+      .set({
+        hour: values.time[0].hour(),
+        minute: values.time[0].minute()
+      });
+    const end = moment(values.date)
+      .set({
+        hour: values.time[1].hour(),
+        minute: values.time[1].minute()
+      });
 
-      if (selectedSession) {
-        await updateSession(selectedSession.id, sessionData);
-      } else {
-        await createSession(sessionData);
-      }
-      
-      fetchSessions();
-      setVisible(false);
-      form.resetFields();
-    } catch (error) {
-      console.error("Error saving session:", error);
+    const sessionData = {
+      title: values.title,
+      start: start.toISOString(),
+      end: end.toISOString(),
+      formateur: values.formateur,
+      apprenants: values.apprenants,
+      type: values.type,
+      description: values.description
+    };
+
+    if (selectedSession) {
+      await updateSession(selectedSession.id, sessionData);
+    } else {
+      await createSession(sessionData);
+    }
+    
+    await fetchSessions();
+    setVisible(false);
+    form.resetFields();
+  } catch (error) {
+    console.error("Error saving session:", error);
+    if (error.response?.data?.code === "DUPLICATE_TITLE") {
+      Modal.error({
+        title: 'Titre déjà utilisé',
+        width: 600,
+        content: (
+          <div>
+            <p style={{ marginBottom: 16 }}>{error.response.data.message}</p>
+            <h4>Suggestions :</h4>
+            <ul style={{ marginBottom: 16 }}>
+              {(error.response.data.suggestions || []).map((suggestion, i) => (
+                <li key={i}>{suggestion}</li>
+              ))}
+            </ul>
+            <Button 
+              type="primary" 
+              onClick={() => {
+                const newTitle = `${values.title} - ${moment().format('DD/MM')}`;
+                form.setFieldsValue({ title: newTitle });
+                Modal.destroyAll();
+              }}
+            >
+              Utiliser un titre avec date
+            </Button>
+          </div>
+        ),
+      });
+    } else {
       Modal.error({
         title: 'Erreur',
-        content: error.message || "Échec de l'enregistrement",
+        content: error.response?.data?.message || "Échec de l'enregistrement",
       });
     }
-  };
+  }
+};
 
   return (
     <div className="relative bg-blueGray-100 md:pt-32 pb-32 pt-12">
@@ -246,7 +288,7 @@ const CardCalendarAdmin = () => {
       </div>
 
        <SessionModal
-        visible={visible}
+        open={visible}
         onCancel={() => {
           setVisible(false);
           form.resetFields();

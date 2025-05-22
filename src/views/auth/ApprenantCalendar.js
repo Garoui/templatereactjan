@@ -1,292 +1,152 @@
-import React, { useState, useEffect } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import frLocale from '@fullcalendar/core/locales/fr';
-import { Modal, Form, Button, Spin } from 'antd';
-import moment from 'moment';
-import { getSessions, createSession, updateSession, deleteSession } from "../../services/apiSession";
-import SessionModal from '../../views/SessionModal';
-import { getAllUsers } from "../../services/apiUser";
+import React, { useState, useEffect } from "react";
+import { Calendar as BigCalendar, momentLocalizer } from "react-big-calendar";
+import moment from "moment";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import "moment/locale/fr";
+import { getApprenantSessions } from "../../services/apiSession";
+import { useHistory } from 'react-router-dom';
 
-const CardCalendarAdmin = () => {
-  const [events, setEvents] = useState([]);
-  const [visible, setVisible] = useState(false);
-  const [form] = Form.useForm();
-  const [formateurs, setFormateurs] = useState([]);
-  const [apprenants, setApprenants] = useState([]);
-  const [selectedSession, setSelectedSession] = useState(null);
-  const [loading, setLoading] = useState({
-    formateurs: false,
-    apprenants: false,
-    sessions: false
-  });
+moment.locale("fr");
+const localizer = momentLocalizer(moment);
 
-useEffect(() => {
-  let isMounted = true;
+const ApprenantCalendar = ({ userId }) => {  // Using userId from props
+  const [selectedLesson, setSelectedLesson] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [lessons, setLessons] = useState([
+    {
+      id: 1,
+      title: "React",
+      tutor: "Marie Dupont",
+      date: new Date(2025, 4, 15, 14, 0),
+      duration: 60,
+    },
+    {
+      id: 2,
+      title: "node",
+      tutor: "John Smith",
+      date: new Date(2025, 4, 18, 10, 30),
+      duration: 45,
+    },
+  ]);
+  const [error, setError] = useState(null);
 
-  const fetchData = async () => {
-    try {
-      setLoading({ formateurs: true, apprenants: true, sessions: true });
-      
-      const [formateursRes, apprenantsRes, sessionsRes] = await Promise.all([
-        getAllUsers("Formateur"),
-        getAllUsers("Apprenant"),
-        getSessions()
-      ]);
+  const history = useHistory();
 
-      if (isMounted) {
-        setFormateurs(formateursRes.data?.formateurListe || []);
-        setApprenants(apprenantsRes.data?.apprenantListe || []);
-        
-        const formatted = sessionsRes.data.map(session => ({
-          id: session._id,
-          title: session.title,
-          start: session.start,
-          end: session.end,
-          formateurId: session.formateur?._id,
-          formateurName: session.formateur ? 
-            `${session.formateur.prenom} ${session.formateur.nom}` : 'Non assigné',
-          apprenantIds: session.apprenants?.map(a => a._id) || [],
-          apprenantNames: session.apprenants?.length > 0 ?
-            session.apprenants.map(a => `${a.prenom} ${a.nom}`).join(', ') :
-            'Aucun',
-          type: session.type,
-          description: session.description
-        }));
-        
-        setEvents(formatted);
-      }
-    } catch (error) {
-      if (isMounted) {
-        console.error("Error fetching data:", error);
-      }
-    } finally {
-      if (isMounted) {
-        setLoading({ formateurs: false, apprenants: false, sessions: false });
-      }
-    }
+  const events = lessons.map((lesson) => ({
+    id: lesson.id,
+    title: `${lesson.title} - ${lesson.tutor}`,
+    start: lesson.date,
+    end: new Date(lesson.date.getTime() + lesson.duration * 60000),
+    lesson,
+  }));
+
+  const handleSelectEvent = (event) => {
+    setSelectedLesson(event.lesson);
   };
 
-  fetchData();
-
-  return () => {
-    isMounted = false;
-  };
-}, []);
-
-  const handleEditSession = (sessionId) => {
-    const session = events.find(e => e.id === sessionId);
-    setSelectedSession(session);
-    form.setFieldsValue({
-      title: session.title,
-      formateur: session.formateurId,
-      apprenants: session.apprenantIds,
-      type: session.type,
-      description: session.description,
-      date: moment(session.start),
-      time: [moment(session.start), moment(session.end)]
-    });
-    setVisible(true);
+  const closeModal = () => {
+    setSelectedLesson(null);
   };
 
-  const handleDeleteSession = async (sessionId) => {
-    Modal.confirm({
-      title: 'Confirmer la suppression',
-      content: 'Êtes-vous sûr de vouloir supprimer cette session?',
-      onOk: async () => {
-        try {
-          await deleteSession(sessionId);
-          fetchSessions();
-        } catch (error) {
-          console.error("Error deleting session:", error);
+  const joinVideoConference = (sessionId) => {
+    closeModal();
+    history.push(`/video-conference/${sessionId}`);
+  };
+
+  const isSessionActive = (lesson) => {
+    const now = new Date();
+    const startTime = new Date(lesson.date);
+    const endTime = new Date(startTime.getTime() + lesson.duration * 60000);
+    return now >= new Date(startTime.getTime() - 15 * 60000) && now <= endTime;
+  };
+
+  useEffect(() => {
+    const fetchApprenantSessions = async () => {
+      try {
+        setLoading(true);
+        if (userId) {  // Using userId from props instead of useAuth
+          const res = await getApprenantSessions(userId);  // Pass userId to API call
+          setLessons(res.data);
+          setError(null);
         }
+      } catch (err) {
+        console.error("Error fetching sessions:", err);
+        setError("Failed to load sessions. Please try again later.");
+      } finally {
+        setLoading(false);
       }
-    });
-  };
-
-    const fetchFormateurs = async () => {
-    try {
-      console.log("Fetching formateurs...");
-      const res = await getAllUsers("Formateur");
-      console.log("Formateurs response:", res);
-      const formateursData = res.data?.formateurListe || [];
-      setFormateurs(formateursData);
-    } catch (error) {
-      console.error("Error fetching formateurs:", error);
-      setFormateurs([]);
-    }
-  };
-
-  // Updated fetchApprenants function
-  const fetchApprenants = async () => {
-    try {
-      console.log("Fetching apprenants...");
-      const res = await getAllUsers("Apprenant");
-      console.log("Apprenants response:", res);
-      const apprenantsData = res.data?.apprenantListe || [];
-      setApprenants(apprenantsData);
-    } catch (error) {
-      console.error("Error fetching apprenants:", error);
-      setApprenants([]);
-    }
-  };
-
-  const fetchSessions = async () => {
-    try {
-      const res = await getSessions();
-      const formatted = res.data.map(session => ({
-        id: session._id,
-        title: session.title,
-        start: session.start,
-        end: session.end,
-        formateurId: session.formateur,
-        apprenantIds: session.apprenants,
-        type: session.type,
-        description: session.description,
-        extendedProps: {
-          formateurName: session.formateurName,
-          apprenantNames: session.apprenantNames
-        }
-      }));
-      setEvents(formatted);
-    } catch (error) {
-      console.error("Error fetching sessions:", error);
-      setEvents([]);
-    }
-  };
-
-  const handleDateClick = (arg) => {
-    setSelectedSession(null);
-    form.resetFields();
-    setVisible(true);
-  };
-
-  const handleEventClick = (info) => {
-    Modal.info({
-      title: info.event.title,
-      content: (
-        <div>
-          <p><strong>Formateur:</strong> {info.event.extendedProps.formateurName}</p>
-          <p><strong>Apprenants:</strong> {info.event.extendedProps.apprenantNames || 'Aucun'}</p>
-          <p><strong>Type:</strong> {info.event.extendedProps.type === 'online' ? 'En ligne' : 'Présentiel'}</p>
-          <p><strong>Description:</strong> {info.event.extendedProps.description || 'Aucune'}</p>
-          <div className="mt-4">
-            <Button onClick={() => handleEditSession(info.event.id)}>Modifier</Button>
-            <Button danger onClick={() => handleDeleteSession(info.event.id)} className="ml-2">
-              Supprimer
-            </Button>
-          </div>
-        </div>
-      ),
-    });
-  };
-
-  const handleSubmit = async (values) => {
-    try {
-      const sessionData = {
-        title: values.title,
-        start: values.time[0].toISOString(),
-        end: values.time[1].toISOString(),
-        formateur: values.formateur,
-        apprenants: values.apprenants,
-        type: values.type,
-        description: values.description
-      };
-
-      if (selectedSession) {
-        await updateSession(selectedSession.id, sessionData);
-      } else {
-        await createSession(sessionData);
-      }
-      
-      fetchSessions();
-      setVisible(false);
-      form.resetFields();
-    } catch (error) {
-      console.error("Error saving session:", error);
-      Modal.error({
-        title: 'Erreur',
-        content: error.message || "Échec de l'enregistrement",
-      });
-    }
-  };
+    };
+    fetchApprenantSessions();
+  }, [userId]);  // Add userId to dependency array
 
   return (
-    <div className="relative bg-blueGray-100 md:pt-32 pb-32 pt-12">
-      <div className="px-4 md:px-10 mx-auto w-full">
-        {loading.sessions ? (
-          <div className="text-center p-8">
-            <Spin size="large" />
-          </div>
-        ) : (
-        <div className="flex flex-wrap">
-          <div className="w-full px-4">
-            <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-              <div className="rounded-t mb-0 px-4 py-3 border-0">
-                <div className="flex flex-wrap items-center">
-                  <div className="relative w-full px-4 max-w-full flex-grow flex-1">
-                    <h3 className="font-semibold text-base text-blueGray-700">
-                      Gestion des Sessions
-                    </h3>
-                  </div>
-                  <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        setSelectedSession(null);
-                        setVisible(true);
-                      }}
-                    >
-                      Ajouter une Session
-                    </Button>
-                  </div>
-                </div>
-              </div>
-              <div className="block w-full overflow-x-auto p-6">
-                <FullCalendar
-                  plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                  initialView="timeGridWeek"
-                  headerToolbar={{
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                  }}
-                  events={events}
-                  locale={frLocale}
-                  nowIndicator
-                  editable
-                  selectable
-                  selectMirror
-                  dayMaxEvents
-                  weekends
-                  dateClick={handleDateClick}
-                  eventClick={handleEventClick}
-                  height="auto"
-                />
-              </div>
+    <div className="bg-lightBlue-200 rounded-lg shadow-md p-6">
+      <h2 className="text-2xl font-bold text-center mb-6">Votre emploi du temps</h2>
+      {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+      {loading ? (
+        <div className="text-center">Loading...</div>
+      ) : (
+        <div style={{ height: "80vh" }}>
+          <BigCalendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: "100%", width: "100%" }}
+            onSelectEvent={handleSelectEvent}
+            messages={{
+              next: "Suivant",
+              previous: "Précédent",
+              today: "Aujourd'hui",
+              month: "Mois",
+              week: "Semaine",
+              day: "Jour",
+              agenda: "Agenda",
+              date: "Date",
+              time: "Heure",
+              event: "Événement",
+              showMore: (total) => `+ ${total} événements supplémentaires`,
+            }}
+          />
+        </div>
+      )}
+
+      {selectedLesson && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <h3 className="text-xl font-bold mb-4">{selectedLesson.title}</h3>
+            <p className="text-gray-700 mb-2">
+              <strong>Avec :</strong> {selectedLesson.tutor}
+            </p>
+            <p className="text-gray-700 mb-2">
+              <strong>Date :</strong> {moment(selectedLesson.date).format("dddd DD MMMM YYYY à HH:mm")}
+            </p>
+            <p className="text-gray-700 mb-2">
+              <strong>Durée :</strong> {selectedLesson.duration} minutes
+            </p>
+            
+            <div className="flex justify-between mt-6">
+              {isSessionActive(selectedLesson) && (
+                <button
+                  onClick={() => joinVideoConference(selectedLesson.id)}
+                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                >
+                  Rejoindre la vidéo-conférence
+                </button>
+              )}
+              
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Fermer
+              </button>
             </div>
           </div>
         </div>
-        )}
-      </div>
-
-       <SessionModal
-        visible={visible}
-        onCancel={() => {
-          setVisible(false);
-          form.resetFields();
-        }}
-        onFinish={handleSubmit}
-        form={form}
-        formateurs={formateurs}
-        apprenants={apprenants}
-        initialValues={selectedSession}
-        loading={loading.formateurs || loading.apprenants}
-      />
+      )}
     </div>
   );
 };
 
-export default CardCalendarAdmin;
+export default ApprenantCalendar;
