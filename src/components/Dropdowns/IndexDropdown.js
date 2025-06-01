@@ -96,7 +96,7 @@ const IndexDropdown = () => {
           Profile Apprenant
         </span>
         <Link
-          to="/studentDashboard"
+          to="/apprenant/dashboard"
           className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
         >
           StudentDashboard
@@ -116,7 +116,7 @@ const IndexDropdown = () => {
           Profile Formateur
         </span>
         <Link
-          to="/formateur/formateurDashbord"
+          to="/formateur/formateurDashboard"
           className="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
         >
           Dashbord

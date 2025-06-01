@@ -19,12 +19,15 @@ export default function Auth() {
       <main>
         <section className="relative w-full h-full py-40 min-h-screen">
           <div
-            className="absolute top-0 w-full h-full bg-blueGray-800 bg-no-repeat bg-full"
+            className="absolute top-0 w-full h-full bg-blueGray-100 bg-no-repeat bg-full"
             style={{
               backgroundImage:
-                "url(" + require("assets/img/backof14.jpg").default + ")",
+                "url(" + require("assets/img/seConnecter.png").default + ")",
             }}
-          ></div>
+          >
+                <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
+
+          </div>
           <Switch>
           <Route path="/auth/login" exact component={Login} />
           <Route path="/auth/forgotPassword" exact component={ForgotPassword} />

@@ -1,7 +1,7 @@
 // components/Dropdowns/UserDropdown.js
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { User, Settings, Book, LogOut } from "react-feather";
+import { User, Settings, LogOut } from "react-feather";
 import Cookies from 'js-cookie';
 
 const UserDropdown = () => {

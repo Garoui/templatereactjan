@@ -15,11 +15,11 @@ function ResetPassword() {
 
   return (
     <div className="max-w-md mx-auto mt-20 bg-white p-6 rounded shadow">
-      <h2 className="text-xl font-bold mb-4">Reset Password</h2>
+      <h2 className="text-xl font-bold mb-4">Réinitialiser le mot de passe</h2>
       <form onSubmit={handleSubmit}>
         <input type="password" className="w-full p-2 mb-4 border"
                value={password} onChange={(e) => setPassword(e.target.value)} placeholder="New password" />
-        <button className="bg-green-600 text-white w-full py-2 rounded">Reset</button>
+        <button className="bg-green-600 text-white w-full py-2 rounded">Réinitialiser</button>
       </form>
       {message && <p className="mt-4 text-green-600">{message}</p>}
     </div>

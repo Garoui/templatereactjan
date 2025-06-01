@@ -88,8 +88,3 @@ export async function getUserByID(id) {
 }
 
 
-export async function getApprenantSessions(apprenantId) {
-  return await axios.get(`${apiurl}/apprenant/${apprenantId}/sessions`, {
-    withCredentials: true,
-  });
-}

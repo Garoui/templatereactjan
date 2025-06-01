@@ -1,4 +1,4 @@
-import axios from 'axios';
+ import axios from 'axios';
 const apiurl = 'http://localhost:5000/session';
 
 export async function getSessions() {
@@ -9,14 +9,14 @@ export async function getSessionById(id) {
   return await axios.get(`${apiurl}/${id}`, { withCredentials: true });
 }
 
-export async function getApprenantSessions(apprenantId) {
-  return await axios.get(`${apiurl}/apprenant/${apprenantId}/sessions`, { 
+export async function getApprenantSessions() {
+  return await axios.get(`${apiurl}/`, { 
     withCredentials: true 
   });
 }
 
 export async function getFormateurSessions() {
-  return await axios.get(`${apiurl}/formateur/sessions`, { 
+  return await axios.get(`${apiurl}/`, { 
     withCredentials: true 
   });
 }
@@ -38,3 +38,18 @@ export async function startVideoConference(sessionId) {
     withCredentials: true 
   });
 }
+export const getSessionsWithStatus = async (userId, role) => {
+  const endpoint = role === 'Formateur' 
+    ? 'formateur/sessions' 
+    : `apprenant/${userId}/sessions`;
+  
+  const res = await axios.get(`${apiurl}/${endpoint}`, {
+    params: {
+      withStatus: true,
+      timestamp: new Date().getTime()
+    },
+    withCredentials: true
+  });
+  return res.data;
+};
+

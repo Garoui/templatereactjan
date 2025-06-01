@@ -3038,3 +3038,13 @@ select {
 
 @media (min-width: 1536px) {
 }
+
+
+.calendar-event-upcoming {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+.calendar-event-ongoing {
+  background-color: #10b981;
+  border-color: #10b981;
+}

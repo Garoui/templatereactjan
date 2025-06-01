@@ -41,7 +41,7 @@ export default function Forget() {
                       onClick={handleSubmit}
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                     >
-                      Submit
+                      Envoyer
                     </button>
                     {message && <p className="mt-4 text-green-600">{message}</p>}
                   </div>
@@ -51,12 +51,12 @@ export default function Forget() {
             <div className="flex flex-wrap mt-6 relative">
               <div className="w-1/2">
                 <Link to="/auth/login" className="text-blueGray-200">
-                  <small>Login</small>
+                  <small>Connexion</small>
                 </Link>
               </div>
               <div className="w-1/2 text-right">
                 <Link to="/auth/register" className="text-blueGray-200">
-                  <small>Create new account</small>
+                  <small>Créer un nouveau compte  </small>
                 </Link>
               </div>
             </div>
