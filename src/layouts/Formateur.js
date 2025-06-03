@@ -73,7 +73,7 @@
 //   );
 // }
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Redirect } from "react-router-dom";
 
 // components
 
@@ -83,11 +83,11 @@ import HeaderStats from "components/Headers/HeaderStats.js";
 
 // views
 
-import FormateurDashboard from "views/formateur/FormateurDashboard.js";
-import Enregistrement from "views/formateur/Enregistrement.js";
-import FormateurCalendar from "views/formateur/FormateurCalendar.js";
+//import FormateurDashboard from "views/formateur/FormateurDashboard.js";
+//import Enregistrement from "views/formateur/Enregistrement.js";
+//import FormateurCalendar from "views/formateur/FormateurCalendar.js";
 import MainNavbar from "components/Navbars/MainNavbar";
-export default function Admin() {
+export default function Formateur() {
   return (
     <>
       <div className="relative md:ml-64 bg-blueGray-100">
@@ -97,9 +97,9 @@ export default function Admin() {
               
         <div className="px-4 md:px-10 mx-auto w-full -m-24">
           <Switch>
-<Route path="/formateur/formateurDashboard" exact component={FormateurDashboard} />
+            {/* <Route path="/formateur/formateurDashboard" exact component={FormateurDashboard} />
             <Route path="/formateur/enregistrement" exact component={Enregistrement} />
-            <Route path="/formateur/formateurCalendar" exact component={FormateurCalendar} />
+            <Route path="/formateur/formateurCalendar" exact component={FormateurCalendar} /> */}
             <Redirect from="/formateur" to="/formateur/formateurDashboard" />
           </Switch>
         </div>

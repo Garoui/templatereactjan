@@ -6,6 +6,7 @@
  import { updateProfile } from "../services/apiUser";
  import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
  import Cookies from 'js-cookie';
+import backgroundImage from "assets/img/Auth.png";
 
 
 //import { render, screen } from '@testing-library/react';
@@ -119,9 +120,10 @@ const handleSave = async () => {
          <section className="relative block h-500-px">
            <div
              className="absolute top-0 w-full h-full bg-center bg-cover"
-             style={{
-               backgroundImage: "url(" + require("assets/img/backof14.jpg").default + ")",
-             }}
+              style={{
+                           backgroundImage: `url(${backgroundImage})`,
+                           zIndex: 0
+                         }}
            >
             <MainNavbar/>
            </div>

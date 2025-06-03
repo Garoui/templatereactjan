@@ -1,91 +1,122 @@
 import React from "react";
-
+import Chart from "chart.js";
 
 export default function CardBarChart() {
-
+  React.useEffect(() => {
+    let config = {
+      type: "bar",
+      data: {
+        labels: [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+        ],
+        datasets: [
+          {
+            label: new Date().getFullYear(),
+            backgroundColor: "#ed64a6",
+            borderColor: "#ed64a6",
+            data: [30, 78, 56, 34, 100, 45, 13],
+            fill: false,
+            barThickness: 8,
+          },
+          {
+            label: new Date().getFullYear() - 1,
+            fill: false,
+            backgroundColor: "#4c51bf",
+            borderColor: "#4c51bf",
+            data: [27, 68, 86, 74, 10, 4, 87],
+            barThickness: 8,
+          },
+        ],
+      },
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        title: {
+          display: false,
+          text: "Orders Chart",
+        },
+        tooltips: {
+          mode: "index",
+          intersect: false,
+        },
+        hover: {
+          mode: "nearest",
+          intersect: true,
+        },
+        legend: {
+          labels: {
+            fontColor: "rgba(0,0,0,.4)",
+          },
+          align: "end",
+          position: "bottom",
+        },
+        scales: {
+          xAxes: [
+            {
+              display: false,
+              scaleLabel: {
+                display: true,
+                labelString: "Month",
+              },
+              gridLines: {
+                borderDash: [2],
+                borderDashOffset: [2],
+                color: "rgba(33, 37, 41, 0.3)",
+                zeroLineColor: "rgba(33, 37, 41, 0.3)",
+                zeroLineBorderDash: [2],
+                zeroLineBorderDashOffset: [2],
+              },
+            },
+          ],
+          yAxes: [
+            {
+              display: true,
+              scaleLabel: {
+                display: false,
+                labelString: "Value",
+              },
+              gridLines: {
+                borderDash: [2],
+                drawBorder: false,
+                borderDashOffset: [2],
+                color: "rgba(33, 37, 41, 0.2)",
+                zeroLineColor: "rgba(33, 37, 41, 0.15)",
+                zeroLineBorderDash: [2],
+                zeroLineBorderDashOffset: [2],
+              },
+            },
+          ],
+        },
+      },
+    };
+    let ctx = document.getElementById("bar-chart").getContext("2d");
+    window.myBar = new Chart(ctx, config);
+  }, []);
   return (
     <>
-      <div className="flex flex-wrap gap-4 p-4">
-        {/* Welcome Banner */}
-        <div className="w-full bg-blue-50 p-6 rounded-lg">
-          <h1 className="text-2xl font-bold text-blue-800">Welcome back, [User]!</h1>
-          <p className="text-blue-600">You have 3 ongoing courses and 2 upcoming deadlines</p>
-        </div>
-        
-        {/* Current Courses */}
-        <div className="flex-1 min-w-[300px] bg-white p-4 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">My Courses</h2>
-          <div className="space-y-3">
-            <div className="border p-3 rounded hover:bg-gray-50 cursor-pointer">
-              <h3 className="font-medium">Introduction to React</h3>
-              <div className="w-full bg-gray-200 h-2 mt-2 rounded">
-                <div className="bg-green-500 h-2 rounded" style={{width: '65%'}}></div>
-              </div>
-              <p className="text-sm text-gray-500 mt-1">65% completed</p>
-            </div>
-            <div className="border p-3 rounded hover:bg-gray-50 cursor-pointer">
-              <h3 className="font-medium">Advanced JavaScript</h3>
-              <div className="w-full bg-gray-200 h-2 mt-2 rounded">
-                <div className="bg-blue-500 h-2 rounded" style={{width: '30%'}}></div>
-              </div>
-              <p className="text-sm text-gray-500 mt-1">30% completed</p>
-            </div>
-          </div>
-          <button className="mt-4 text-blue-600 hover:text-blue-800 text-sm font-medium">
-            View all courses →
-          </button>
-        </div>
-        
-        {/* Upcoming Deadlines */}
-        <div className="flex-1 min-w-[300px] bg-white p-4 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Upcoming Deadlines</h2>
-          <div className="space-y-3">
-            <div className="border-l-4 border-red-500 pl-3 py-2">
-              <h3 className="font-medium">Assignment: React Components</h3>
-              <p className="text-sm text-gray-500">Due tomorrow</p>
-            </div>
-            <div className="border-l-4 border-yellow-500 pl-3 py-2">
-              <h3 className="font-medium">Quiz: JavaScript Fundamentals</h3>
-              <p className="text-sm text-gray-500">Due in 3 days</p>
-            </div>
-          </div>
-          <button className="mt-4 text-blue-600 hover:text-blue-800 text-sm font-medium">
-            View calendar →
-          </button>
-        </div>
-        
-        {/* Recent Resources */}
-        <div className="w-full bg-white p-4 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Recent Resources</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="border p-3 rounded hover:bg-gray-50 cursor-pointer">
-              <h3 className="font-medium">React Documentation</h3>
-              <p className="text-sm text-gray-500">Added 2 days ago</p>
-            </div>
-            <div className="border p-3 rounded hover:bg-gray-50 cursor-pointer">
-              <h3 className="font-medium">JavaScript Cheat Sheet</h3>
-              <p className="text-sm text-gray-500">Added 1 week ago</p>
-            </div>
-            <div className="border p-3 rounded hover:bg-gray-50 cursor-pointer">
-              <h3 className="font-medium">CSS Flexbox Guide</h3>
-              <p className="text-sm text-gray-500">Added 2 weeks ago</p>
+      <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+        <div className="rounded-t mb-0 px-4 py-3 bg-transparent">
+          <div className="flex flex-wrap items-center">
+            <div className="relative w-full max-w-full flex-grow flex-1">
+              <h6 className="uppercase text-blueGray-400 mb-1 text-xs font-semibold">
+                Performance
+              </h6>
+              <h2 className="text-blueGray-700 text-xl font-semibold">
+                Total orders
+              </h2>
             </div>
           </div>
         </div>
-        
-        {/* Quick Actions */}
-        <div className="w-full bg-white p-4 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-          <div className="flex flex-wrap gap-4">
-            <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-              Continue Learning
-            </button>
-            <button className="px-4 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-50">
-              Browse Courses
-            </button>
-            <button className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50">
-              View Progress
-            </button>
+        <div className="p-4 flex-auto">
+          {/* Chart */}
+          <div className="relative h-350-px">
+            <canvas id="bar-chart"></canvas>
           </div>
         </div>
       </div>

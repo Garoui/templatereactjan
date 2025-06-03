@@ -46,11 +46,11 @@ import HeaderStats from "components/Headers/HeaderStats.js";
 
 // views
 
-import Dashboard from "views/apprenant/Dashboard.js";
-import Courses from "views/apprenant/Courses.js";
-import Calendar from "views/apprenant/Calendar.js";
+// import Dashboard from "views/apprenant/Dashboard.js";
+// import Courses from "views/apprenant/Courses.js";
+// import Calendar from "views/apprenant/Calendar.js";
 import MainNavbar from "components/Navbars/MainNavbar";
-export default function Admin() {
+export default function Apprenant() {
   return (
     <>
       <div className="relative md:ml-64 bg-blueGray-100">
@@ -60,9 +60,9 @@ export default function Admin() {
               
         <div className="px-4 md:px-10 mx-auto w-full -m-24">
           <Switch>
-            <Route path="/apprenant/dashboard" exact component={Dashboard} />
+            {/* <Route path="/apprenant/dashboard" exact component={Dashboard} />
             <Route path="/apprenant/courses" exact component={Courses} />
-            <Route path="/apprenant/calendar" exact component={Calendar} />
+            <Route path="/apprenant/calendar" exact component={Calendar} /> */}
             <Redirect from="/apprenant" to="/apprenant/dashboard" />
           </Switch>
         </div>

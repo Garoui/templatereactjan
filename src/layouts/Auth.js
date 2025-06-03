@@ -12,22 +12,24 @@ import Login from "views/auth/Login.js";
 import ForgotPassword from "views/auth/ForgotPassword";
 import ResetPassword from "views/auth/ResetPassword";
 import Register from "views/auth/Register.js";
+import backgroundImage from "assets/img/Auth.png";
+
 export default function Auth() {
   return (
     <>
       <Navbar transparent />
+      
       <main>
         <section className="relative w-full h-full py-40 min-h-screen">
           <div
             className="absolute top-0 w-full h-full bg-blueGray-100 bg-no-repeat bg-full"
             style={{
-              backgroundImage:
-                "url(" + require("assets/img/seConnecter.png").default + ")",
+              backgroundImage: `url(${backgroundImage})`,
+              zIndex: 0
             }}
-          >
-                <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
+            />
 
-          </div>
+          
           <Switch>
           <Route path="/auth/login" exact component={Login} />
           <Route path="/auth/forgotPassword" exact component={ForgotPassword} />
@@ -41,4 +43,4 @@ export default function Auth() {
       </main>
     </>
   );
-}
+} 

@@ -35,9 +35,10 @@ export default function MainNavbar() {
         <div className="w-full mx-autp items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
           {/* Brand */}
            <a
-            className="text-white text-sm uppercase hidden lg:inline-block font-semibold"
+            className="text-black text-sm uppercase hidden lg:inline-block font-semibold"
             href="#pablo"
             onClick={(e) => e.preventDefault()}
+            to="/apprenant/dashboard"
           >
             Tableau de bord
           </a> 

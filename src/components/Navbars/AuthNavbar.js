@@ -10,31 +10,32 @@ export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   return (
     <>
-      <nav className="top-0 absolute z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg">
-        <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
-          {/* <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
-            <Link
-              className="text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
-              to="/"
-            >
-              Acceuil
-            </Link>
-            <button
+      <nav className="fixed top-2 left-4 right-4 z-40  shadow-sm">
+  <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+    <Link
+      className="text-black text-lg font-bold uppercase hover:text-blue-600 transition-colors"
+      to="/"
+    >
+      EduPlatform
+    </Link>
+  
+            
+             {/* <button
               className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
               type="button"
               onClick={() => setNavbarOpen(!navbarOpen)}
             >
               <i className="text-white fas fa-bars"></i>
             </button>
-          </div> */}
-          <div
+          </div>  */}
+          {/* <div
             className={
               "lg:flex flex-grow items-center bg-white lg:bg-opacity-0 lg:shadow-none" +
               (navbarOpen ? " block rounded shadow-lg" : " hidden")
             }
             id="example-navbar-warning"
           >
-            {/* <ul className="flex flex-col lg:flex-row list-none mr-auto">
+            <ul className="flex flex-col lg:flex-row list-none mr-auto">
               <li className="flex items-center">
                 <a
                   className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
@@ -44,8 +45,8 @@ export default function Navbar(props) {
                   Docs
                 </a>
               </li>
-            </ul> */}
-            {/* <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
+            </ul> 
+             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
               <li className="flex items-center">
                 <PagesDropdown />
               </li>
@@ -90,9 +91,10 @@ export default function Navbar(props) {
                   <i className="fas fa-arrow-alt-circle-down"></i> Download
                 </button>
               </li> 
-            </ul> */}
-          </div>
+            </ul> 
+          </div> */}
         </div>
+        
       </nav>
     </>
   );
