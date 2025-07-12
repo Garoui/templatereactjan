@@ -1,5 +1,5 @@
 //cnx bin front w back sart ala rest api
-//import Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import axios from 'axios'; //cest une outil djib data mn backend  
 
@@ -70,21 +70,34 @@ export async function updateUser(userData,idUser) {
 }
 //const token = Cookies.get('jwt_token_abir');
 
-export async function updateProfile(formData) {
-  return await axios.put(`${apiurl}/updateUser`,formData,{
+export async function updateProfile(userData) {
+  const token = Cookies.get('jwt_token_abir');
+  return await axios.put(`${apiurl}/updateUser`, userData, {
     withCredentials: true,
-      //  headers: {
-      //   Authorization: `Bearer ${token}`
-      // }
-});
-
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
 }
 
 
 export async function getUserByID(id) {
-  return await axios.get(`${ apiurl }/User/${ id }`,{
+  return await axios.get(`${apiurl}/getUserByID/${id}`,{
     withCredentials: true,
 });
 }
 
-
+// services/apiUser.js
+export const updateUserStatus = async (userId, newStatus) => {
+  try {
+    const response = await axios.put(
+      `${apiurl}/updateUserStatus/${userId}`,  // Correct endpoint
+      { status: newStatus },
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user status:", error);
+    throw error;
+  }
+};

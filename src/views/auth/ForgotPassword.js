@@ -50,12 +50,12 @@ export default function Forget() {
             </div>
             <div className="flex flex-wrap mt-6 relative">
               <div className="w-1/2">
-                <Link to="/auth/login" className="text-blueGray-200">
+                <Link to="/auth/login" className="text-blueGray-700">
                   <small>Connexion</small>
                 </Link>
               </div>
               <div className="w-1/2 text-right">
-                <Link to="/auth/register" className="text-blueGray-200">
+                <Link to="/auth/register" className="text-blueGray-700">
                   <small>Créer un nouveau compte  </small>
                 </Link>
               </div>

@@ -12,12 +12,14 @@ export default function Navbar(props) {
     <>
       <nav className="fixed top-2 left-4 right-4 z-40  shadow-sm">
   <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-    <Link
-      className="text-black text-lg font-bold uppercase hover:text-blue-600 transition-colors"
-      to="/"
-    >
-      EduPlatform
-    </Link>
+   <li className="flex items-center">
+                   <Link
+                     to="/home"
+                     className="text-gray-700 hover:text-blue-600 px-3 py-3 flex items-center text-sm font-semibold transition-colors duration-200"
+                   >
+                     <i className="fas fa-home mr-2"></i> Accueil
+                   </Link>
+                 </li>
   
             
              {/* <button

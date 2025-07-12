@@ -6,7 +6,7 @@
  import { updateProfile } from "../services/apiUser";
  import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
  import Cookies from 'js-cookie';
-import backgroundImage from "assets/img/Auth.png";
+import backgroundImage from "assets/img/profill.png";
 
 
 //import { render, screen } from '@testing-library/react';
@@ -90,27 +90,44 @@ import backgroundImage from "assets/img/Auth.png";
      const token = Cookies.get('jwt_token_abir'); // Retrieve the token from cookies
      const userData = Cookies.get('user_data'); // Retrieve user data (you should set this data on login)
     
-   if (!token || !userData) {
-       // Parse the user data and set it
-       const user = JSON.parse(userData);
-       setUser(user);
-     } else {
-       // If no user or token, redirect to login
-       history.push("/login");
-   }
-   }, [history]);
+   if (!token && userData) {
+     try {
+      // Parse the user data and set it
+      const user = JSON.parse(userData);
+      setUser(user);
+      setImage(user.photo || "photodeprofile.png"); // Optional profile image
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      history.push("/auth/login"); // Redirect to login if userData is invalid
+    }
+  } else {
+    // If no user or token, redirect to login
+    history.push("/auth/login");
+  }
+}, [history]);
 
 
 // components
 const handleSave = async () => {
   const token = Cookies.get('jwt_token_abir');
+  if (!token) {
+    alert("Please login first");
+    return;
+  }
+
+  // Check password match if changing password
+  if (user.password && user.password !== user.confirmPassword) {
+    alert("Passwords don't match!");
+    return;
+  }
+
   try {
     await updateProfile(user, token);
     setEditMode(false);
-    alert("Profil mis à jour !");
+    alert("Profile updated successfully!");
   } catch (error) {
-    console.error("Erreur mise à jour :", error);
-    alert("Erreur lors de la mise à jour.");
+    console.error("Update error:", error);
+    alert(error.response?.data?.message || "Error updating profile");
   }
 };
 
@@ -224,23 +241,18 @@ const handleSave = async () => {
                   />
                 </div>
               </div>
-              <div className="w-full lg:w-6/12 px-4">
-                <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
-                   confirmer mot de pass
-                  </label>
-                  <input
-                    type="password"
-                    onChange={(e) => setUser({ ...user, password: e.target.value })}
-
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    
-                  />
-                </div>
-              </div>
+             <div className="w-full lg:w-6/12 px-4">
+  <div className="relative w-full mb-3">
+    <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+      Confirm Password
+    </label>
+    <input
+      type="password"
+      onChange={(e) => setUser({ ...user, confirmPassword: e.target.value })}
+      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+    />
+  </div>
+</div>
               <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
                   <label

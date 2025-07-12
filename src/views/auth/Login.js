@@ -51,11 +51,11 @@ export default function Login() {
                   <h6 className="text-blueGray-500 text-sm font-bold">
                     Connectez-Vous A Votre Compte
                   </h6>
-                  <div className="text-blueGray-400 text-center mb-3 font-bold">
+                  {/* <div className="text-blueGray-400 text-center mb-3 font-bold">
                     <small>Se Connecter En Utilisant Les Réseaux Sociaux</small>
-                  </div>
+                  </div> */}
                 </div>
-                <div className="btn-wrapper text-center">
+                {/* <div className="btn-wrapper text-center">
                   <ul className="flex flex-wrap justify-center list-none">
                     <li className="flex items-center">
                       <a
@@ -102,14 +102,14 @@ export default function Login() {
                       </a>
                     </li>
                   </ul>
-                </div>
+                </div> */}
 
                 <hr className="mt-6 border-b-1 border-blueGray-300" />
               </div>
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                <div className="text-blueGray-400 text-center mb-3 font-bold">
+                {/* <div className="text-blueGray-400 text-center mb-3 font-bold">
                   <small>Ou Connectez-vous avec vos identifiants</small>
-                </div>
+                </div> */}
                 <form>
                   <div className="relative w-full mb-3">
                     <label

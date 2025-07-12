@@ -89,7 +89,7 @@ const SidebarFormateur = () => {
 
             {/* Navigation */}
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
-              <li className="items-center">
+              {/* <li className="items-center">
                 <button
                   onClick={() => setActiveTab('formateurdashboard')}
                   className={
@@ -109,7 +109,7 @@ const SidebarFormateur = () => {
                   ></i>{" "}
                   Tableau de bord
                 </button>
-              </li>
+              </li> */}
               <li className="items-center">
                 <button
                   onClick={() => setActiveTab('enregistrement')}

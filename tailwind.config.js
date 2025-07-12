@@ -15,8 +15,19 @@ module.exports = {
       "./public/*.js",
     ],
     options: {
-      safelist: [],
-    },
+  safelist: [
+    'bg-amber-100', 'text-amber-800',
+    'bg-emerald-100', 'text-emerald-800',
+    'bg-red-100', 'text-red-800',
+    'bg-gray-100', 'text-gray-800',
+    'bg-blue-100', 'text-blue-800',
+    'bg-green-500', 'text-white',
+    'bg-red-500', 'text-white',
+    'hover:bg-green-600',
+    'hover:bg-red-600',
+    // Include all variants you might use
+  ],
+}
   },
   theme: {
     colors: {
@@ -79,6 +90,14 @@ module.exports = {
       backgroundSize: {
         full: "100%",
       },
+      colors: {
+        green: {
+          500: '#10B981',
+        },
+        red: {
+          500: '#EF4444',
+        }
+      }
     },
   },
   variants: [

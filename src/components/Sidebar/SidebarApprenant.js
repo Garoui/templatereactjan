@@ -116,7 +116,7 @@ const SidebarApprenant = () => {
 
             {/* Navigation */}
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
-              <li className="items-center">
+              {/* <li className="items-center">
                 <button
                   onClick={() => setActiveTab('dashboard')}
                   className={
@@ -136,7 +136,7 @@ const SidebarApprenant = () => {
                   ></i>{" "}
                   Tableau de bord
                 </button>
-              </li>
+              </li> */}
               <li className="items-center">
                 <button
                   onClick={() => setActiveTab('courses')}
