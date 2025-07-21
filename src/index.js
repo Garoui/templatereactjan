@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Cookies from "js-cookie";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/styles/tailwind.css";
+import MeetingRoom from "./views/MeetingRoom";
 
 // import moment from 'moment';
 // import 'moment/locale/fr';
@@ -57,13 +58,16 @@ ReactDOM.render(
 
       {/* add routes without layouts */}
       {/* <Route path="/landing" exact component={Landing} /> */}
-            <Route path="/profile" exact component={Profile} />
+      <Route path="/profile" exact component={Profile} />
       <Route path="/sessionModal" exact component={SessionModal} />
       <Route path="/sessionStatusBadge" exact component={SessionStatusBadge} />
 
       <Route path="/" exact component={Index} />
       {/* Protected routes */}
       <PrivateRoute path="/profile" exact component={Profile} />
+
+
+      <Route path="/meeting/:roomId" exact component={MeetingRoom} />
       
       {/* add redirect for first page */}
       <Redirect from="*" to="/" />
