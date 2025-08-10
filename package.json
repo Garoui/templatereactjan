@@ -5,7 +5,7 @@
   "repository": "https://github.com/creativetimofficial/notus-react",
   "license": "MIT",
   "dependencies": {
-    "@100mslive/react-sdk": "^0.10.35",
+    "@100mslive/react-sdk": "^0.10.36",
     "@100mslive/react-ui": "^0.8.9",
     "@100mslive/roomkit-react": "^0.3.35",
     "@ant-design/icons": "^6.0.0",
