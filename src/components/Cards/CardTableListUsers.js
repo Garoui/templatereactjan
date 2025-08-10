@@ -41,11 +41,11 @@ export default function CardTableListUsers({ color }) {
 
   const getStatusColor = (status) => {
   switch (status) {
-    case "Pending": return "status-pending";
-    case "Paid": return "status-paid";
-    case "Unpaid": return "status-unpaid";
-    case "Canceled": return "status-canceled";
-    default: return "status-default";
+    case "Pending": return "bg-yellow-100 text-yellow-800";
+    case "Paid": return "bg-green-100 text-green-800";
+    case "Unpaid": return "bg-red-100 text-red-800";
+    case "Canceled": return "bg-gray-100 text-gray-800";
+    default: return "bg-blue-100 text-blue-800";
   }
 };
 
@@ -129,14 +129,14 @@ export default function CardTableListUsers({ color }) {
                     {user.formations?.map(f => f.titre).join(", ") || "Aucune formation"}
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-    <span className={`px-2 py-1 rounded-full font-semibold ${getStatusColor(user.Status)}`}>
-      {user.Status === "Pending" ? "En attente" : 
-       user.Status === "Paid" ? "Actif" :
-       user.Status === "Unpaid" ? "Désactivé" :
-       user.Status === "Canceled" ? "Annulé" : 
-       "En attente"}
-    </span>
-  </td>
+                    <span className={`px-2 py-1 rounded-full font-semibold ${getStatusColor(user.Status)}`}>
+  {user.Status === "Pending" ? "En attente" : 
+   user.Status === "Paid" ? "Actif" :
+   user.Status === "Unpaid" ? "Désactivé" :
+   user.Status === "Canceled" ? "Annulé" : 
+   "En attente"}
+</span>
+                  </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
@@ -192,16 +192,16 @@ export default function CardTableListUsers({ color }) {
                 </h6>
                 <div className="relative mt-4">
                  <button
-    type="button"
-    className={`inline-flex items-center px-4 py-2 rounded-md text-sm font-medium ${getStatusColor(selectedUser.Status)}`}
-    onClick={() => setIsStatusModalVisible(true)}
-  >
-    {selectedUser.Status === "Pending" ? "En attente" : 
-     selectedUser.Status === "Paid" ? "Actif" :
-     selectedUser.Status === "Unpaid" ? "Désactivé" :
-     selectedUser.Status === "Canceled" ? "Annulé" : 
-     "Statut"}
-  </button>
+  type="button"
+  className={`inline-flex items-center px-4 py-2 rounded-md text-sm font-medium ${getStatusColor(selectedUser.Status)}`}
+  onClick={() => setIsStatusModalVisible(true)}
+>
+  {selectedUser.Status === "Pending" ? "En attente" : 
+   selectedUser.Status === "Paid" ? "Actif" :
+   selectedUser.Status === "Unpaid" ? "Désactivé" :
+   selectedUser.Status === "Canceled" ? "Annulé" : 
+   "Statut"}
+</button>
                 </div>
               </div>
             </div>
